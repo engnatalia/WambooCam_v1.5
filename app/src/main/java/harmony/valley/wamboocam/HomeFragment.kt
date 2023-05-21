@@ -40,7 +40,8 @@ import harmony.valley.wamboocam.workers.VideoCompressionWorker
 import java.math.RoundingMode
 import kotlin.math.round
 import java.util.*
-
+private const val REQUEST_PICK_VIDEO = 1
+private const val REQUEST_DELETE_VIDEO = 2
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
@@ -72,8 +73,22 @@ class HomeFragment : Fragment() {
     var init70= 0.0
     var unidades = ""
     private lateinit var sharedPreferences: SharedPreferences
-
-
+    private val pickVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            videoUrl = data?.data
+            // Handle the selected video URI
+        }
+    }
+    private val deleteVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            videoUrl?.let { videoUri ->
+                // The video has been deleted, perform necessary actions
+                // after deleting the selected video
+            }
+        }
+    }
+    private var selectedVideoUri: Uri? = null
 
 
     //this receiver will trigger when the compression is completed
@@ -107,31 +122,31 @@ class HomeFragment : Fragment() {
                     compressedFilePath = intent.getStringExtra(URI_PATH).toString()
 
                     if (videoResolution == videoResolutionInit) {
-                            binding.quality.text =""
-                            binding.quality.visibility= View.VISIBLE
-                            binding.qualityDescription.visibility= View.VISIBLE
-                            binding.checkboxQuality.visibility= View.VISIBLE
-                            binding.checkboxQuality.setOnCheckedChangeListener{ _, _ ->
-                                val checked: Boolean = binding.checkboxQuality.isChecked
-                                if (checked) {
-                                    /*val snack = Snackbar.make(binding.compressVideo,getString(R.string.waiting),Toast.LENGTH_SHORT)
-                                    snack.setAnchorView(binding.compressVideo)
-                                    snack.show()*/
+                        binding.quality.text =""
+                        binding.quality.visibility= View.VISIBLE
+                        binding.qualityDescription.visibility= View.VISIBLE
+                        binding.checkboxQuality.visibility= View.VISIBLE
+                        binding.checkboxQuality.setOnCheckedChangeListener{ _, _ ->
+                            val checked: Boolean = binding.checkboxQuality.isChecked
+                            if (checked) {
+                                /*val snack = Snackbar.make(binding.compressVideo,getString(R.string.waiting),Toast.LENGTH_SHORT)
+                                snack.setAnchorView(binding.compressVideo)
+                                snack.show()*/
 
 
 
-                                    calculateQuality()
-
-                                }
-
+                                calculateQuality()
 
                             }
-                        } else {
-                            binding.quality.visibility= View.GONE
-                            binding.qualityDescription.visibility= View.GONE
-                            binding.checkboxQuality.visibility= View.GONE
-                            binding.quality.text =""
+
+
                         }
+                    } else {
+                        binding.quality.visibility= View.GONE
+                        binding.qualityDescription.visibility= View.GONE
+                        binding.checkboxQuality.visibility= View.GONE
+                        binding.quality.text =""
+                    }
                 }
             }
 
@@ -184,9 +199,9 @@ class HomeFragment : Fragment() {
             quality = ((1-ssim.toDouble())*100).toBigDecimal().setScale(2,
                 RoundingMode.UP).toDouble()
             binding.quality.text = buildString {
-        append(quality.toString())
-        append("%")
-    }
+                append(quality.toString())
+                append("%")
+            }
             msg1 = getString(R.string.quality_completed)+" "+quality.toString()+"%"}
         else{
             binding.quality.text =getString(R.string.poor_quality)
@@ -225,10 +240,11 @@ class HomeFragment : Fragment() {
             binding.dataTV.visibility=View.GONE
             binding.dataTV2.visibility=View.GONE
             binding.dataTV3.visibility=View.GONE
-            }
+        }
         binding.captureVideo.visibility = View.VISIBLE
         binding.reset.visibility = View.VISIBLE
         binding.shareVideo.visibility = View.VISIBLE
+        binding.deleteVideo.visibility = View.VISIBLE
         binding.statsContainer.visibility = View.VISIBLE
         binding.initialSizeTV.text = initialSize
         binding.compressedSizeTV.text = compressedSize
@@ -244,11 +260,11 @@ class HomeFragment : Fragment() {
         }else{
             binding.co2TV.setTextColor(Color.parseColor("#6F9F3A"))
             binding.co2TV.text = buildString {
-        append(co2)
-        append("kgCO2")
-        append("\n")
-        append(getString(R.string.congrats))
-    }
+                append(co2)
+                append("kgCO2")
+                append("\n")
+                append(getString(R.string.congrats))
+            }
 
         }
         if (compressedSize != null && initialSize != "") {
@@ -498,8 +514,8 @@ class HomeFragment : Fragment() {
 
             return true
         } else {
-                    showAlertDialog()
-                    return false
+            showAlertDialog()
+            return false
 
         }
 
@@ -537,7 +553,7 @@ class HomeFragment : Fragment() {
     // Here we are initialising everything and setting click listeners on the code . Like what will happen
     // When the user tap on pick video button and other buttons
     private fun initUI() = with(binding) {
-		reset.setOnClickListener {
+        reset.setOnClickListener {
             resetViews()
         }
 
@@ -552,23 +568,24 @@ class HomeFragment : Fragment() {
         captureVideo.setOnClickListener {
 
 
-           // if (isBatteryOptimizationDisabled()) {
-                resetViews()
-                shareVideo.visibility = View.GONE
-                when {
-                    ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.CAMERA
-                    ) == PackageManager.PERMISSION_GRANTED -> {
-                        dispatchTakeVideoIntent()
-//                        deleteOriginalVideoFromGallery(videoUrl)
-                    }
+            // if (isBatteryOptimizationDisabled()) {
+            resetViews()
+            shareVideo.visibility = View.GONE
+            deleteVideo.visibility = View.GONE
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    dispatchTakeVideoIntent()
 
                 }
 
+            }
 
 
-          //  }
+
+            //  }
 
         }
         rdOne.setOnClickListener{
@@ -598,8 +615,8 @@ class HomeFragment : Fragment() {
         }
 
 
-      /*  with(spinner)
-        {setSelection(0, false)}*/
+        /*  with(spinner)
+          {setSelection(0, false)}*/
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -613,40 +630,40 @@ class HomeFragment : Fragment() {
                 when (selectedtype) {
                     getString(R.string.good) ->{
 
-                            hideSpinner(spinner2)
-                            hideSpinner(spinner3)
-                            hideSpinner(spinner4)
-                            binding.dataTV.visibility=View.VISIBLE
-                            binding.dataTV2.visibility=View.VISIBLE
-                            binding.dataTV3.visibility=View.VISIBLE
-                            binding.dataTV.text=getString(R.string.estimated_size)
-                            binding.dataTV2.text=Html.fromHtml("<b>"+init40.toBigDecimal().setScale(2,RoundingMode.UP).toDouble()+" $unidades"+"</b>")
-                            binding.dataTV3.text="40% "+ getString(R.string.compression)
-                        }
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
+                        binding.dataTV.visibility=View.VISIBLE
+                        binding.dataTV2.visibility=View.VISIBLE
+                        binding.dataTV3.visibility=View.VISIBLE
+                        binding.dataTV.text=getString(R.string.estimated_size)
+                        binding.dataTV2.text=Html.fromHtml("<b>"+init40.toBigDecimal().setScale(2,RoundingMode.UP).toDouble()+" $unidades"+"</b>")
+                        binding.dataTV3.text="40% "+ getString(R.string.compression)
+                    }
                     getString(R.string.best) ->{
 
-                            hideSpinner(spinner2)
-                            hideSpinner(spinner3)
-                            hideSpinner(spinner4)
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
                         binding.dataTV.visibility=View.VISIBLE
                         binding.dataTV2.visibility=View.VISIBLE
                         binding.dataTV3.visibility=View.VISIBLE
                         binding.dataTV.text=getString(R.string.estimated_size)
                         binding.dataTV2.text=Html.fromHtml("<b>"+init70.toBigDecimal().setScale(2,RoundingMode.UP).toDouble()+" $unidades"+"</b>")
                         binding.dataTV3.text="70% "+ getString(R.string.compression)
-                        }
+                    }
                     getString(R.string.ultrafast) ->{
 
-                            hideSpinner(spinner2)
-                            hideSpinner(spinner3)
-                            hideSpinner(spinner4)
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
                         binding.dataTV.visibility=View.VISIBLE
                         binding.dataTV2.visibility=View.VISIBLE
                         binding.dataTV3.visibility=View.VISIBLE
                         binding.dataTV.text=getString(R.string.estimated_size)
                         binding.dataTV2.text=Html.fromHtml("<b>"  +init75.toBigDecimal().setScale(2,RoundingMode.UP).toDouble() +" $unidades"+"</b>")
                         binding.dataTV3.text="75% "+ getString(R.string.compression)
-                                        }
+                    }
 
                     getString(R.string.custom_h) ->{
                         dataTV.isVisible=false
@@ -663,16 +680,16 @@ class HomeFragment : Fragment() {
                     }
                     else ->{
 
-                    hideSpinner(spinner2)
-                    hideSpinner(spinner3)
-                    hideSpinner(spinner4)
-                    binding.dataTV.visibility=View.VISIBLE
-                    binding.dataTV2.visibility=View.VISIBLE
-                    binding.dataTV3.visibility=View.VISIBLE
-                    binding.dataTV.text=getString(R.string.estimated_size)
-                    binding.dataTV2.text=Html.fromHtml("<b>"  +init75.toBigDecimal().setScale(2,RoundingMode.UP).toDouble()+" $unidades"+"</b>")
-                    binding.dataTV3.text="75% "+ getString(R.string.compression)
-                }
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
+                        binding.dataTV.visibility=View.VISIBLE
+                        binding.dataTV2.visibility=View.VISIBLE
+                        binding.dataTV3.visibility=View.VISIBLE
+                        binding.dataTV.text=getString(R.string.estimated_size)
+                        binding.dataTV2.text=Html.fromHtml("<b>"  +init75.toBigDecimal().setScale(2,RoundingMode.UP).toDouble()+" $unidades"+"</b>")
+                        binding.dataTV3.text="75% "+ getString(R.string.compression)
+                    }
                 }
 
 
@@ -685,7 +702,7 @@ class HomeFragment : Fragment() {
         // Add Spinner to LinearLayout
 
 
-          //  binding.spinner.visibility=View.VISIBLE
+        //  binding.spinner.visibility=View.VISIBLE
 
 
 
@@ -694,10 +711,11 @@ class HomeFragment : Fragment() {
             //clearPref()
             statsContainer.visibility = View.GONE
             shareVideo.visibility = View.GONE
+            deleteVideo.visibility = View.GONE
             binding.checkboxQuality.isChecked = false
             if (videoUrl != null) {
 
-				compressVideo.isVisible = false													 
+                compressVideo.isVisible = false
                 val value =
                     fileSize(videoUrl!!.length(requireActivity().contentResolver))
                 editor.putString(INITIAL_SIZE, value)
@@ -741,6 +759,10 @@ class HomeFragment : Fragment() {
             binding.videoView.visibility = View.GONE
 
         }
+        binding.deleteVideo.setOnClickListener {
+            deleteOriginalVideoFromGallery(videoUrl)
+
+        }
 
 
     }
@@ -751,32 +773,33 @@ class HomeFragment : Fragment() {
             }
         }
     }
-private fun resetViews() {
-    with(binding) {
+    private fun resetViews() {
+        with(binding) {
 
-        clearPref()
-        captureVideo.isVisible = true
-        spinner.isVisible=false
-        spinner2.isVisible=false
-        spinner3.isVisible=false
-        spinner4.isVisible=false
-        statsContainer.isVisible = false
-        videoView.isVisible = false
-        checkboxAudio.isVisible=false
-        shareVideo.isVisible=false
-        compressVideo.isVisible = false
-        reset.isVisible = false
-        dataTV.isVisible=false
-        dataTV2.isVisible=false
-        dataTV3.isVisible=false
-        rdOne.isChecked=false
-        binding.quality.visibility= View.GONE
-        binding.qualityDescription.visibility= View.GONE
-        binding.checkboxQuality.visibility= View.GONE
-        binding.quality.text =""
-        spinner.setSelection(0)
+            clearPref()
+            captureVideo.isVisible = true
+            spinner.isVisible=false
+            spinner2.isVisible=false
+            spinner3.isVisible=false
+            spinner4.isVisible=false
+            statsContainer.isVisible = false
+            videoView.isVisible = false
+            checkboxAudio.isVisible=false
+            shareVideo.isVisible=false
+            deleteVideo.isVisible=false
+            compressVideo.isVisible = false
+            reset.isVisible = false
+            dataTV.isVisible=false
+            dataTV2.isVisible=false
+            dataTV3.isVisible=false
+            rdOne.isChecked=false
+            binding.quality.visibility= View.GONE
+            binding.qualityDescription.visibility= View.GONE
+            binding.checkboxQuality.visibility= View.GONE
+            binding.quality.text =""
+            spinner.setSelection(0)
+        }
     }
-}
     private fun addSpinnerResolution():Spinner {
 
 
@@ -980,9 +1003,9 @@ private fun resetViews() {
         return binding.spinner4
 
     }
- private fun visibleViews() {
+    private fun visibleViews() {
 
-     with(binding) {
+        with(binding) {
             captureVideo.isVisible = true
             videoView.isVisible = true
             spinner.isVisible=true
@@ -999,27 +1022,45 @@ private fun resetViews() {
             dataTV2.visibility=View.GONE
             dataTV3.visibility=View.GONE
 
-     }
-		}
+        }
+    }
     private fun hideSpinner(spinner: Spinner) {
         spinner.visibility= View.GONE
 
 
     }
+
+
     private fun deleteOriginalVideoFromGallery(videoUri: Uri?) {
-        val uriToDelete = Uri.parse(videoUri.toString())
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "video/*"
+        startActivityForResult(intent, REQUEST_PICK_VIDEO)
+        videoUri?.let { videoUri ->
+            val deleteIntent = Intent(Intent.ACTION_VIEW)
+            deleteIntent.setDataAndType(videoUri, "video/*")
+            deleteIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            deleteIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
 
-        val resolver = requireActivity().contentResolver
-        val deletedRows = resolver.delete(uriToDelete, null, null)
-
-        if (deletedRows > 0) {
-            Toast.makeText(requireActivity(), "Video deleted successfully", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireActivity(), "Failed to delete video", Toast.LENGTH_SHORT).show()
+            startActivity(deleteIntent)
         }
+        /*pickVideoLauncher.launch(intent)
+        videoUri?.let { videoUri ->
+            val deleteIntent = Intent(Intent.ACTION_DELETE)
+            deleteIntent.data = videoUri
 
+            deleteVideoLauncher.launch(deleteIntent)
+        }*/
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == REQUEST_PICK_VIDEO && resultCode == Activity.RESULT_OK) {
+            val videoUri = data?.data
+            selectedVideoUri = videoUri
+            // Handle the selected video URI
+
+        }
+    }
     /* This code is using the registerForActivityResult method to launch an activity for a result,
 specifically to select a video file. If the result code is Activity.RESULT_OK, it means a video has been successfully selected.
 The selected video's Uri is extracted from the Intent returned from the launched activity.
@@ -1137,7 +1178,7 @@ If there is an error in the process, an error message is displayed to the user v
                                 if (init75<1){
                                     init75 *= 1000
                                     unidades = "KB"
-                            }
+                                }
                                 if (init40<1){
                                     init40 *= 1000
                                     unidades = "KB"
@@ -1209,6 +1250,7 @@ If there is an error in the process, an error message is displayed to the user v
         const val INITIAL_BATTERY = "initial_battery"
         const val REMAINING_BATTERY = "remaining_battery"
         const val CO2 = "co2"
+
     }
 
 

@@ -84,6 +84,7 @@
     <string name="estimated_size">Size after compression, smaller than:</string>
     <string name="compression">reduction (at least)</string>
     <string name="compressed">compressed</string>
+    <string name="delete_video">Delete non-compressed video</string>
     <string name="background">Allow background compression</string>
     <string name="background2">Background compression already enabled!</string>
     <string name="noreduction">Bigger file because original was already compressed or had poor quality!</string>

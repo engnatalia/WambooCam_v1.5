@@ -82,6 +82,7 @@
     <string name="no">No</string>
     <string name="estimated_size">Tamaño tras comprimir, menos de:</string>
     <string name="compression">de reducción (al menos)</string>
+    <string name="delete_video">Borrar video no comprimido</string>
     <string name="background">Habilita el funcionamiento en segundo plano</string>
     <string name="ok">OK</string>
     <string name="background2">Compresión en segundo plano ya habilitada</string>
