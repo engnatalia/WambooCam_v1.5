@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wamboo</string>
+    <string name="app_name">Wamboo Cam</string>
     <string name="intro">El vídeo es el tipo de datos que más consumimos y el más complicado de procesar en dispositivos electrónicos, lo que genera toneladas de emisiones de CO2 cada año.</string>
     <string name="body">"Al usar Wamboo, puedes reducir el tamaño de tus videos hasta en un 90%, para ahorrar memoria no solo en su teléfono, sino también en los servidores de redes sociales (grandes PC que almacenan información digital) si los compartes. De esta manera, con videos más pequeños, reducirás tu huella de carbono. Además, Wamboo es eficiente porque minimiza el uso de la batería del teléfono mientras comprime los videos y muestra la contaminación asociada cuando se gasta algo de batería. En las apps de compresión tradicionales, los recursos del teléfono no se usan de manera eficiente y el gasto de la batería se maximiza, lo que genera contaminación, ya que el teléfono debe cargarse con más frecuencia, consumiendo más energía eléctrica (con los costes asociados de electricidad para los usuarios). "</string>
     <string name="body2">De esta forma, también ahorrarás dinero en almacenamiento (discos duros, en la nube...) y en electricidad!</string>
     <string name="end">"Te animamos a ti y a todos los usuarios de vídeo a comprimirlos con Wamboo antes de compartirlos, especialmente si crees que tu vídeo puede compartirse varias veces o volverse viral: evitaremos toneladas de emisiones de CO2 al año! "</string>
     <string name="contact">Contáctanos: contact.harmonyvalley@gmail.com</string>
-    <string name="select_video">Selecciona el vídeo</string>
+    <string name="capture_video">Grabar vídeo</string>
     <string name="ultrafast">Ultra-rápido</string>
     <string name="good">Bueno</string>
     <string name="best">El mejor, pero lento</string>

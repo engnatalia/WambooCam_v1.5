@@ -9,13 +9,35 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8657652c-175c-4ae3-8120-7be546b5f0c9" name="Changes" comment="message for % size reduction, saved instance state videourl, spinner reset, initial resolution at first, not rotate screen">
+    <list default="true" id="8657652c-175c-4ae3-8120-7be546b5f0c9" name="Changes" comment="license not needed removed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/obfuscation/mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/obfuscation/mapping.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/release/app-release.aab" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.aab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/wamboo/example/videocompressor/ExampleInstrumentedTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/androidTest/java/harmony/valley/wamboocam/ExampleInstrumentedTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/AppUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/AppUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/ChartAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/ChartAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/FileUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/FileUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HistoryFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HistoryFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/InfoFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/InfoFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/ViewPagerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/ViewPagerAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/WambooApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/WambooCamApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/db/AppDataBase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/db/AppDataBase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/db/CompressionDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/db/CompressionDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/di/DatabaseModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/di/DatabaseModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/models/CompressData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/models/CompressData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/repository/CompressRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/repository/CompressRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/services/VideoCompressionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/services/VideoCompressionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/vm/CompressViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/vm/CompressViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/workers/ForegroundWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/workers/ForegroundWorker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/workers/VideoCompressionWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/workers/VideoCompressionWorker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/wamboo/example/videocompressor/ExampleUnitTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/harmony/valley/wamboocam/ExampleUnitTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +45,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ChangesViewManager" show_ignored="true" />
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\matlab\.android\avd\Pixel_6_Pro_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R5CRB314NDL]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -98,30 +120,32 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;BundleExportedModule&quot;: &quot;VideoCompressor.app&quot;,
-    &quot;ExportBundle.BundlePathForVideoCompressor.app&quot;: &quot;C:\\Users\\matlab\\Documents\\HV\\Papers\\GOAL 1\\Paper 4\\Wamboo MVP\\Version2.0\\Wamboo_v2.0\\app&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/matlab/Documents/HV/Papers/GOAL 1/Paper 4/Wamboo MVP/Version2.0/Wamboo_v2.0/app/src/main/res/drawable&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "BundleExportedModule": "VideoCompressor.app",
+    "ExportBundle.BundlePathForVideoCompressor.app": "C:\\Users\\matlab\\Documents\\HV\\Papers\\GOAL 1\\Paper 4\\Wamboo MVP\\Version2.0\\Wamboo_v2.0\\app",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-viewC:/Users/matlab/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.2.0/3e159bfab49c7e6495fe374e6e5e1e989ee21dcf/recyclerview-1.2.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED": "RecyclerView",
+    "android-custom-viewC:/Users/matlab/.gradle/caches/modules-2/files-2.1/androidx.viewpager2/viewpager2/1.1.0-beta01/921826aed498ed0ebd4304290c9d7be5da573f73/viewpager2-1.1.0-beta01-sources.jar!/androidx/viewpager2/widget/ViewPager2.java_SELECTED": "ViewPager2",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "C:/Users/matlab/Documents/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1/WambooCam_v1.0",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ExportApk.BuildVariants&quot;: [
-      &quot;release&quot;
+  "keyToStringList": {
+    "ExportApk.BuildVariants": [
+      "release"
     ]
   }
-}</component>
+}]]></component>
   <component name="PsdUISettings">
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
@@ -139,7 +163,7 @@
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
-      <module name="VideoCompressor.app.main" />
+      <module name="EcoCam.app.main" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -479,7 +503,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682664208860</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="added license info and text in the Info tab">
+      <created>1683359631624</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1683359631624</updated>
+    </task>
+    <task id="LOCAL-00041" summary="license not needed removed">
+      <created>1683360596571</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1683360596571</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -498,8 +536,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="added botton to compute quality and removed videoView until selected" />
-    <MESSAGE value="added alert view when calculating the quality" />
     <MESSAGE value="added alert view when compression finished to scroll down" />
     <MESSAGE value="changed descriptions colour to green and improved video visibility" />
     <MESSAGE value="corrected when to obtain quality (same resolution) visibility" />
@@ -523,40 +559,37 @@
     <MESSAGE value="corrected % predicted, added notifications config in background button, corrected spinner to reset, added margins om info tab" />
     <MESSAGE value="corrected quality computation when resolution is equal" />
     <MESSAGE value="message for % size reduction, saved instance state videourl, spinner reset, initial resolution at first, not rotate screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="message for % size reduction, saved instance state videourl, spinner reset, initial resolution at first, not rotate screen" />
+    <MESSAGE value="added license info and text in the Info tab" />
+    <MESSAGE value="license not needed removed" />
+    <option name="LAST_COMMIT_MESSAGE" value="license not needed removed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HistoryFragment.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HistoryFragment.kt</url>
           <line>102</line>
           <option name="timeStamp" value="208" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HistoryFragment.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HistoryFragment.kt</url>
           <line>123</line>
           <option name="timeStamp" value="209" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HistoryFragment.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HistoryFragment.kt</url>
           <line>122</line>
           <option name="timeStamp" value="210" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HistoryFragment.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HistoryFragment.kt</url>
           <line>100</line>
           <option name="timeStamp" value="211" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/AppUtils.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/AppUtils.kt</url>
           <line>100</line>
           <option name="timeStamp" value="215" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/wamboo/example/videocompressor/HomeFragment.kt</url>
-          <line>995</line>
-          <option name="timeStamp" value="265" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -6,16 +6,20 @@ plugins {
 }
 
 android {
-    namespace 'wamboo.example.videocompressor'
+    namespace 'harmony.valley.wamboocam'
     compileSdk 33
 
     defaultConfig {
-        applicationId "wamboo.example.videocompressor"
+        applicationId "harmony.valley.wamboocam"
         minSdk 30
         targetSdk 33
         versionCode 6
         versionName "2.0"
-
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
