@@ -63,11 +63,13 @@ class HomeFragment : Fragment() {
     private var  videoCodec =""
     private var  compressSpeed =""
     private lateinit var videoView: VideoView
+    private lateinit var videoView2: VideoView
     private var audio = "-c:a copy"
     private lateinit var binding: FragmentHomeBinding
     private var selectedtype = "Ultrafast"
     private lateinit var progressDialog: AlertDialog
     private var showViews = true
+    private var showVideo = false
     var  init75 = 0.0
     var init40= 0.0
     var init70= 0.0
@@ -100,7 +102,6 @@ class HomeFragment : Fragment() {
                 Log.d("Service", "Broadcast run")
 
                 if (intent.getStringExtra(RETURN_CODE).equals("0")) { //0 means success
-
                     val msg1 = getString(R.string.notification_message_success)
                     Toast.makeText(context, msg1, Toast.LENGTH_SHORT).show()
                     AlertDialog.Builder(requireActivity()).apply {
@@ -110,6 +111,7 @@ class HomeFragment : Fragment() {
                             "OK"
                         ) { _, _ -> (requireActivity()) }
                     }.create().show()
+
                     showDataFromPref()
 
 
@@ -120,7 +122,13 @@ class HomeFragment : Fragment() {
                 if (compressedFilePath != intent.getStringExtra(URI_PATH)){
 
                     compressedFilePath = intent.getStringExtra(URI_PATH).toString()
+                    binding.videoView2.setVideoURI(Uri.parse(compressedFilePath))
 
+                    // after successful retrieval of the video and properly
+                    // setting up the retried video uri in
+                    // VideoView, Start the VideoView to play that video
+                    binding.videoView2.start()
+                    binding.videoView2.isVisible=true
                     if (videoResolution == videoResolutionInit) {
                         binding.quality.text =""
                         binding.quality.visibility= View.VISIBLE
@@ -187,7 +195,6 @@ class HomeFragment : Fragment() {
             Uri.parse(compressedFilePath)
         )} -lavfi \"ssim;[0:v][1:v]psnr\" -f null -"
         Toast.makeText(context,  Html.fromHtml("<font color='red' ><b>" +getString(R.string.quality_progress)+ "</b></font>"), Toast.LENGTH_SHORT).show()
-
         val hola=FFmpegKit.execute(command2)
         binding.quality.visibility = View.VISIBLE
         val indexSsim = hola.logs.size
@@ -232,6 +239,8 @@ class HomeFragment : Fragment() {
         //showing stats data in the textviews
         if (!showView){
             binding.videoView.visibility = View.GONE
+            binding.deleteVideo.visibility = View.GONE
+            binding.videoView2.visibility = View.GONE
             binding.spinner.visibility = View.GONE
             binding.spinner2.visibility = View.GONE
             binding.spinner3.visibility = View.GONE
@@ -241,7 +250,25 @@ class HomeFragment : Fragment() {
             binding.dataTV2.visibility=View.GONE
             binding.dataTV3.visibility=View.GONE
         }
+        when (videoUrl) {
+            null -> {
+                binding.videoView.visibility = View.GONE
+                binding.deleteVideo.visibility = View.GONE
+                binding.videoView2.visibility = View.VISIBLE
+                binding.videoView2.start()}
+        else -> {
+            binding.videoView.visibility = View.VISIBLE
+            binding.videoView2.visibility = View.VISIBLE
+            binding.deleteVideo.visibility = View.VISIBLE
+            binding.videoView.start()
+            binding.videoView2.start()
+        }
+        }
+        // now set the video uri in the VideoView
+
+
         binding.captureVideo.visibility = View.VISIBLE
+
         binding.reset.visibility = View.VISIBLE
         binding.shareVideo.visibility = View.VISIBLE
         binding.deleteVideo.visibility = View.VISIBLE
@@ -252,6 +279,8 @@ class HomeFragment : Fragment() {
         binding.initialBatteryTV.text = initialBattery
         binding.remainingBatteryTV.text = remainingBattery
         showViews = false
+
+
         val pollution= co2!!.toDouble()
         if (pollution > 0) {
             binding.co2TV.setTextColor(Color.parseColor("#FF0000"))
@@ -308,7 +337,6 @@ class HomeFragment : Fragment() {
             videoUrl = it.getParcelable("videoUrl")
         }
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
         pref = requireActivity().getSharedPreferences(
             requireActivity().packageName, Context.MODE_PRIVATE
         )
@@ -363,7 +391,7 @@ class HomeFragment : Fragment() {
             //clearPref()
 
         } else {
-            showViews = false
+           showViews = false
         }
     }
 
@@ -377,6 +405,7 @@ class HomeFragment : Fragment() {
         checkCameraPermission()
         initUI()
         videoView = binding.root.findViewById(R.id.videoView)
+        videoView2 = binding.root.findViewById(R.id.videoView2)
         showLoader()
     }
 
@@ -595,6 +624,7 @@ class HomeFragment : Fragment() {
 
         // Setting media controller to the video . So the user can pause and play the video . They will appear when user tap on video
         videoView.setMediaController(MediaController(requireActivity()))
+        videoView2.setMediaController(MediaController(requireActivity()))
         checkboxAudio.setOnCheckedChangeListener{ checkboxAudio, _ ->
             val checked: Boolean = checkboxAudio.isChecked
             if (checked) {
@@ -707,7 +737,6 @@ class HomeFragment : Fragment() {
 
 
         compressVideo.setOnClickListener {
-
             //clearPref()
             statsContainer.visibility = View.GONE
             shareVideo.visibility = View.GONE
@@ -720,10 +749,12 @@ class HomeFragment : Fragment() {
                     fileSize(videoUrl!!.length(requireActivity().contentResolver))
                 editor.putString(INITIAL_SIZE, value)
                 editor.commit()
-
                 // When the compress video button is clicked we check if video is already playing then we pause it
                 if (videoView.isPlaying) {
                     videoView.pause()
+                }
+                if (videoView2.isPlaying) {
+                    videoView2.pause()
                 }
 
                 // Set up the input data for the worker
@@ -747,6 +778,8 @@ class HomeFragment : Fragment() {
 
                 // If picked video is null or video is not picked
                 binding.videoView.visibility = View.GONE
+
+                binding.videoView2.visibility = View.GONE
                 Toast.makeText(context, Html.fromHtml("<font color='red' ><b>" +getString(R.string.capture_video)+ "</b></font>"), Toast.LENGTH_SHORT).show()
             }
 
@@ -756,11 +789,15 @@ class HomeFragment : Fragment() {
         binding.shareVideo.setOnClickListener {
             ShareCompat.IntentBuilder(requireActivity()).setStream(Uri.parse(compressedFilePath))
                 .setType("video/mp4").setChooserTitle(getString(R.string.share_compressed_video)).startChooser()
-            binding.videoView.visibility = View.GONE
+            //binding.videoView.visibility = View.GONE
 
         }
+
         binding.deleteVideo.setOnClickListener {
             deleteOriginalVideoFromGallery(videoUrl)
+
+
+
 
         }
 
@@ -784,6 +821,7 @@ class HomeFragment : Fragment() {
             spinner4.isVisible=false
             statsContainer.isVisible = false
             videoView.isVisible = false
+            videoView2.isVisible = false
             checkboxAudio.isVisible=false
             shareVideo.isVisible=false
             deleteVideo.isVisible=false
@@ -798,6 +836,7 @@ class HomeFragment : Fragment() {
             binding.checkboxQuality.visibility= View.GONE
             binding.quality.text =""
             spinner.setSelection(0)
+
         }
     }
     private fun addSpinnerResolution():Spinner {
@@ -809,7 +848,6 @@ class HomeFragment : Fragment() {
         )
         var resolutionSpinner =arrayOf("")
         var resolutionValues =arrayOf("")
-
         when (videoUrl) {
             null -> {
 
@@ -889,6 +927,7 @@ class HomeFragment : Fragment() {
         when (videoUrl) {
             null -> {
                 binding.videoView.visibility = View.GONE
+
                 Toast.makeText(context, Html.fromHtml("<font color='red' ><b>" +getString(R.string.capture_video)+ "</b></font>"), Toast.LENGTH_SHORT).show()
 
 
@@ -1007,12 +1046,12 @@ class HomeFragment : Fragment() {
 
         with(binding) {
             captureVideo.isVisible = true
-            videoView.isVisible = true
+            //videoView.isVisible = true
             spinner.isVisible=true
             checkboxAudio.isVisible=true
             compressVideo.isVisible = true
-            showViews=true
             videoView.visibility = View.GONE
+            videoView2.visibility = View.GONE
             spinner.visibility = View.GONE
             spinner2.visibility = View.GONE
             spinner3.visibility = View.GONE
@@ -1021,6 +1060,7 @@ class HomeFragment : Fragment() {
             dataTV.visibility=View.GONE
             dataTV2.visibility=View.GONE
             dataTV3.visibility=View.GONE
+
 
         }
     }
@@ -1050,6 +1090,8 @@ class HomeFragment : Fragment() {
 
             deleteVideoLauncher.launch(deleteIntent)
         }*/
+        videoUrl = intent.data
+
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -1080,7 +1122,9 @@ If there is an error in the process, an error message is displayed to the user v
                     binding.spinner2.isVisible = true
                     binding.spinner3.isVisible = true
                     binding.spinner4.isVisible = true
+                    binding.checkboxAudio.isVisible=true
                     videoUrl=it
+
                     //binding.compressVideo.isVisible = true
                 }
                 if (data != null) {
@@ -1098,7 +1142,6 @@ If there is an error in the process, an error message is displayed to the user v
                                     videoUrl
                                 )
                             )
-
 
                             videoHeight = mediaInformation.mediaInformation.streams[0].height.toString()
                             videoWidth = mediaInformation.mediaInformation.streams[0].width.toString()
@@ -1132,6 +1175,7 @@ If there is an error in the process, an error message is displayed to the user v
 
                         }
                         binding.videoView.visibility=View.VISIBLE
+
                         // now set the video uri in the VideoView
                         binding.videoView.setVideoURI(uri)
 
