@@ -404,6 +404,9 @@ class HomeFragment : Fragment() {
         loadAd()
         //checkNotificationPermission()
         checkCameraPermission()
+        //checkImagesPermission()
+        //checkVideosPermission()
+        //checkWritingPermission()
         initUI()
         videoView = binding.root.findViewById(R.id.videoView)
         videoView2 = binding.root.findViewById(R.id.videoView2)
@@ -440,6 +443,87 @@ class HomeFragment : Fragment() {
         }
 
     }
+
+    private fun checkWritingPermission() {
+        val requestPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    Log.i("Permission: ", "Granted")
+                } else {
+                    Log.i("Permission: ", "Denied")
+                }
+            }
+
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED -> {
+
+
+                requestPermissionLauncher.launch(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                )
+
+            }
+        }
+    }
+
+    private fun checkImagesPermission() {
+        val requestPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    Log.i("Permission: ", "Granted")
+                } else {
+                    Log.i("Permission: ", "Denied")
+                }
+            }
+
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_MEDIA_IMAGES
+            ) != PackageManager.PERMISSION_GRANTED -> {
+
+
+
+                requestPermissionLauncher.launch(
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                )
+
+            }
+        }
+    }
+    private fun checkVideosPermission() {
+        val requestPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    Log.i("Permission: ", "Granted")
+                } else {
+                    Log.i("Permission: ", "Denied")
+                }
+            }
+
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_MEDIA_VIDEO
+            ) != PackageManager.PERMISSION_GRANTED -> {
+
+
+                requestPermissionLauncher.launch(
+                    Manifest.permission.READ_MEDIA_VIDEO,
+                )
+
+            }
+        }
+    }
     private fun checkCameraPermission() {
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -457,11 +541,6 @@ class HomeFragment : Fragment() {
                 requireContext(),
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
-
-
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
 
 
                 requestPermissionLauncher.launch(
@@ -470,55 +549,9 @@ class HomeFragment : Fragment() {
 
             }
         }
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
-
-
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
-
-
-                requestPermissionLauncher.launch(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                )
-
-            }
-        }
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_MEDIA_IMAGES
-            ) != PackageManager.PERMISSION_GRANTED -> {
 
 
 
-                requestPermissionLauncher.launch(
-                    Manifest.permission.READ_MEDIA_IMAGES,
-                )
-
-            }
-        }
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_MEDIA_VIDEO
-            ) != PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
-
-
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
-
-                requestPermissionLauncher.launch(
-                    Manifest.permission.READ_MEDIA_VIDEO,
-                )
-
-            }
-        }
 
 
     }
@@ -1115,6 +1148,7 @@ class HomeFragment : Fragment() {
 
             startActivity(deleteIntent)
         }
+
 
         videoUrl = intent.data
 
