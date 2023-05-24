@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.work.*
@@ -256,14 +257,15 @@ class HomeFragment : Fragment() {
                 binding.deleteVideo.visibility = View.GONE
                 binding.videoView2.visibility = View.VISIBLE
                 binding.videoView2.start()}
-        else -> {
-            binding.videoView.visibility = View.VISIBLE
-            binding.videoView2.visibility = View.VISIBLE
-            binding.deleteVideo.visibility = View.VISIBLE
-            binding.videoView.start()
-            binding.videoView2.start()
+            else -> {
+                binding.videoView.visibility = View.VISIBLE
+                binding.videoView2.visibility = View.VISIBLE
+                binding.deleteVideo.visibility = View.VISIBLE
+                binding.videoView.start()
+                binding.videoView2.start()
+            }
         }
-        }
+
         // now set the video uri in the VideoView
 
 
@@ -271,7 +273,6 @@ class HomeFragment : Fragment() {
 
         binding.reset.visibility = View.VISIBLE
         binding.shareVideo.visibility = View.VISIBLE
-        binding.deleteVideo.visibility = View.VISIBLE
         binding.statsContainer.visibility = View.VISIBLE
         binding.initialSizeTV.text = initialSize
         binding.compressedSizeTV.text = compressedSize
@@ -391,7 +392,7 @@ class HomeFragment : Fragment() {
             //clearPref()
 
         } else {
-           showViews = false
+            showViews = false
         }
     }
 
@@ -483,6 +484,37 @@ class HomeFragment : Fragment() {
 
                 requestPermissionLauncher.launch(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                )
+
+            }
+        }
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_MEDIA_IMAGES
+            ) != PackageManager.PERMISSION_GRANTED -> {
+
+
+
+                requestPermissionLauncher.launch(
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                )
+
+            }
+        }
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_MEDIA_VIDEO
+            ) != PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+
+
+                // You can directly ask for the permission.
+                // The registered ActivityResultCallback gets the result of this request.
+
+                requestPermissionLauncher.launch(
+                    Manifest.permission.READ_MEDIA_VIDEO,
                 )
 
             }
@@ -1083,14 +1115,10 @@ class HomeFragment : Fragment() {
 
             startActivity(deleteIntent)
         }
-        /*pickVideoLauncher.launch(intent)
-        videoUri?.let { videoUri ->
-            val deleteIntent = Intent(Intent.ACTION_DELETE)
-            deleteIntent.data = videoUri
 
-            deleteVideoLauncher.launch(deleteIntent)
-        }*/
         videoUrl = intent.data
+
+
 
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
