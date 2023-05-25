@@ -23,5 +23,6 @@ class ForegroundWorker(
         const val VIDEO_RESOLUTION = "videoResolution"
         const val VideoURI = "videoURI"
         const val SELECTION_TYPE = "type"
+        const val SELECTION_FORMAT = "format"
     }
 }

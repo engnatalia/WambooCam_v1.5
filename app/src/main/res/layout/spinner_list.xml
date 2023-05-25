@@ -10,5 +10,6 @@
         android:textColor="#6C9E40"
         android:textSize="16sp"
         android:layout_marginStart="20dp"
+        android:paddingStart="20dp"
         android:textStyle="italic"/>
 

@@ -58,11 +58,12 @@ class VideoCompressionService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val videoUri = intent?.getStringExtra(ForegroundWorker.VideoURI)
         val selectedtype = intent?.getStringExtra(ForegroundWorker.SELECTION_TYPE)
+        val selectedformat = intent?.getStringExtra(ForegroundWorker.SELECTION_FORMAT)
         val videoResolution =intent?.getStringExtra(ForegroundWorker.VIDEO_RESOLUTION)
         val videoCodec =intent?.getStringExtra(ForegroundWorker.VIDEO_CODEC)
         val compressSpeed =intent?.getStringExtra(ForegroundWorker.COMPRESS_SPEED)
         val audio =intent?.getStringExtra(ForegroundWorker.VIDEO_AUDIO)
-        compressVideo(Uri.parse(videoUri), selectedtype.toString(),videoResolution, videoCodec, compressSpeed,audio)
+        compressVideo(Uri.parse(videoUri), selectedtype.toString(),selectedformat.toString(), videoResolution, videoCodec, compressSpeed,audio)
 
         return START_NOT_STICKY
     }
@@ -128,6 +129,7 @@ class VideoCompressionService : Service() {
     private fun compressVideo(
         videoUri: Uri,
         selectedtype: String,
+        selectedformat: String,
         videoResolution: String?,
         videoCodec: String?,
         compressSpeed: String?,
@@ -140,7 +142,7 @@ class VideoCompressionService : Service() {
         val command: String
         var uriPath: Uri? = null
         val filePrefix = "Compressed"
-        val fileExtn = ".mp4"
+        val fileExtn = "."+selectedformat
         val bm = getSystemService(BATTERY_SERVICE) as BatteryManager
         val initcapacity: Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
@@ -155,10 +157,23 @@ class VideoCompressionService : Service() {
                 filePrefix + System.currentTimeMillis() + fileExtn
             )
 
-            if (fileExtn == ".webm") {
-                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/webm")
-            } else {
-                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+
+            when (fileExtn) {
+                ".mkv"->{
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/webm")
+                }
+                ".mp4"->{
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/pm4")
+                }
+                ".avi"->{
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/avi")
+                }
+                ".mov"->{
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mov")
+                }
+                else->{
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+                }
             }
 
             valuesVideos.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000)

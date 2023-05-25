@@ -51,6 +51,8 @@ class HomeFragment : Fragment() {
     private var videoUrl: Uri? = null
     private var compressedFilePath = ""
     private var typesSpinner=arrayOf("")
+    private var formatsSpinner=arrayOf("")
+    private var formatsValues=arrayOf("")
     private lateinit var pref: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var mediaInformation : MediaInformationSession
@@ -68,9 +70,10 @@ class HomeFragment : Fragment() {
     private var audio = "-c:a copy"
     private lateinit var binding: FragmentHomeBinding
     private var selectedtype = "Ultrafast"
+    private var selectedformat = "mp4"
+    private var videoformat = "mp4"
     private lateinit var progressDialog: AlertDialog
     private var showViews = true
-    private var showVideo = false
     var  init75 = 0.0
     var init40= 0.0
     var init70= 0.0
@@ -243,6 +246,7 @@ class HomeFragment : Fragment() {
             binding.deleteVideo.visibility = View.GONE
             binding.videoView2.visibility = View.GONE
             binding.spinner.visibility = View.GONE
+            binding.spinner5.visibility = View.GONE
             binding.spinner2.visibility = View.GONE
             binding.spinner3.visibility = View.GONE
             binding.spinner4.visibility = View.GONE
@@ -659,6 +663,15 @@ class HomeFragment : Fragment() {
         typesSpinner = arrayOf(getString(R.string.select_compression),getString(R.string.ultrafast),getString(R.string.good),getString(R.string.best),getString(R.string.custom_h),getString(R.string.custom_l))
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_row, typesSpinner)
         spinner.adapter = arrayAdapter
+
+        spinner5.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        formatsSpinner = arrayOf("Select format","mp4","avi","mov","mkv" )
+        formatsValues = arrayOf("mp4","mp4","avi","mov","mkv" )
+        val arrayAdapter2 = ArrayAdapter(requireContext(), R.layout.spinner_row, formatsSpinner)
+        spinner5.adapter = arrayAdapter2
         captureVideo.setOnClickListener {
 
 
@@ -708,7 +721,35 @@ class HomeFragment : Fragment() {
             }
 
         }
+        spinner5.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) { selectedformat =formatsValues[position]
+                videoformat =formatsSpinner[position]
 
+                when (position) {
+                    0->{Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.no_selected_codec),
+                        Toast.LENGTH_SHORT
+                    ).show()}
+                    else ->{Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.selected_codec) + " " + videoformat,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    }
+                }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+
+        }
 
         /*  with(spinner)
           {setSelection(0, false)}*/
@@ -827,6 +868,7 @@ class HomeFragment : Fragment() {
                 val data2 =
                     Data.Builder().putString(ForegroundWorker.VideoURI, videoUrl?.toString())
                         .putString(ForegroundWorker.SELECTION_TYPE, selectedtype)
+                        .putString(ForegroundWorker.SELECTION_FORMAT, selectedformat)
                         .putString(ForegroundWorker.VIDEO_RESOLUTION, videoResolution)
                         .putString(ForegroundWorker.COMPRESS_SPEED, compressSpeed)
                         .putString(ForegroundWorker.VIDEO_CODEC, videoCodec)
@@ -853,7 +895,7 @@ class HomeFragment : Fragment() {
 
         binding.shareVideo.setOnClickListener {
             ShareCompat.IntentBuilder(requireActivity()).setStream(Uri.parse(compressedFilePath))
-                .setType("video/mp4").setChooserTitle(getString(R.string.share_compressed_video)).startChooser()
+                .setType("video/"+selectedformat).setChooserTitle(getString(R.string.share_compressed_video)).startChooser()
             //binding.videoView.visibility = View.GONE
 
         }
@@ -881,6 +923,7 @@ class HomeFragment : Fragment() {
             clearPref()
             captureVideo.isVisible = true
             spinner.isVisible=false
+            spinner5.isVisible=false
             spinner2.isVisible=false
             spinner3.isVisible=false
             spinner4.isVisible=false
@@ -901,7 +944,7 @@ class HomeFragment : Fragment() {
             binding.checkboxQuality.visibility= View.GONE
             binding.quality.text =""
             spinner.setSelection(0)
-
+            spinner5.setSelection(0)
         }
     }
     private fun addSpinnerResolution():Spinner {
@@ -1112,12 +1155,13 @@ class HomeFragment : Fragment() {
         with(binding) {
             captureVideo.isVisible = true
             //videoView.isVisible = true
-            spinner.isVisible=true
+            //spinner.isVisible=true
             checkboxAudio.isVisible=true
             compressVideo.isVisible = true
             videoView.visibility = View.GONE
             videoView2.visibility = View.GONE
             spinner.visibility = View.GONE
+            spinner5.visibility = View.GONE
             spinner2.visibility = View.GONE
             spinner3.visibility = View.GONE
             spinner4.visibility = View.GONE
@@ -1181,6 +1225,7 @@ If there is an error in the process, an error message is displayed to the user v
                     videoView.setVideoURI(it)
                     videoView.start()
                     binding.spinner.isVisible = true
+                    binding.spinner5.isVisible = true
                     binding.spinner2.isVisible = true
                     binding.spinner3.isVisible = true
                     binding.spinner4.isVisible = true
