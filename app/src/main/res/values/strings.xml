@@ -42,6 +42,9 @@
     <string name="selected_resolution">Selected resolution:</string>
     <string name="select_resolution">Select resolution</string>
     <string name="no_selected_resolution">No resolution selected</string>
+    <string name="selected_format">Selected format:</string>
+    <string name="select_format">Select format</string>
+    <string name="no_selected_format">No resolution format</string>
     <string name="no_selected_speed">No speed selected</string>
     <string name="selected_speed">Selected speed:</string>
     <string name="select_speed">Select speed</string>

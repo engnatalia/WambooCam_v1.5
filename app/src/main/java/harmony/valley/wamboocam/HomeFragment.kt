@@ -668,8 +668,8 @@ class HomeFragment : Fragment() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        formatsSpinner = arrayOf("Select format","mp4","avi","mov","mkv" )
-        formatsValues = arrayOf("mp4","mp4","avi","mov","mkv" )
+        formatsSpinner = arrayOf(getString(R.string.select_format),"mp4","avi","mov","mkv","3gp" )
+        formatsValues = arrayOf("mp4","mp4","avi","mov","mkv","3gp" )
         val arrayAdapter2 = ArrayAdapter(requireContext(), R.layout.spinner_row, formatsSpinner)
         spinner5.adapter = arrayAdapter2
         captureVideo.setOnClickListener {
@@ -733,12 +733,12 @@ class HomeFragment : Fragment() {
                 when (position) {
                     0->{Toast.makeText(
                         requireActivity(),
-                        getString(R.string.no_selected_codec),
+                        getString(R.string.no_selected_format),
                         Toast.LENGTH_SHORT
                     ).show()}
                     else ->{Toast.makeText(
                         requireActivity(),
-                        getString(R.string.selected_codec) + " " + videoformat,
+                        getString(R.string.selected_format) + " " + videoformat,
                         Toast.LENGTH_SHORT
                     ).show()
                     }
@@ -1226,9 +1226,9 @@ If there is an error in the process, an error message is displayed to the user v
                     videoView.start()
                     binding.spinner.isVisible = true
                     binding.spinner5.isVisible = true
-                    binding.spinner2.isVisible = true
+                    /*binding.spinner2.isVisible = true
                     binding.spinner3.isVisible = true
-                    binding.spinner4.isVisible = true
+                    binding.spinner4.isVisible = true*/
                     binding.checkboxAudio.isVisible=true
                     videoUrl=it
 

@@ -89,5 +89,8 @@
     <string name="compressed">comprimido</string>
     <string name="noreduction">Mayor tamaño que original porque ya fue comprimido o la calidad era muy baja!</string>
     <string name="contact1">¿Comentarios o preguntas? ¿Qué características te gustaría que tuviera la siguiente versión de Wamboo?</string>
+    <string name="selected_format">Formato seleccionado:</string>
+    <string name="select_format">Seleccionaformato</string>
+    <string name="no_selected_format">Formato no seleccionado</string>
 
 </resources>

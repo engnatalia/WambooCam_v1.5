@@ -160,10 +160,13 @@ class VideoCompressionService : Service() {
 
             when (fileExtn) {
                 ".mkv"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/webm")
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mkv")
+                }
+                ".3gp"->{
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/3gp")
                 }
                 ".mp4"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/pm4")
+                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
                 }
                 ".avi"->{
                     valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/avi")
