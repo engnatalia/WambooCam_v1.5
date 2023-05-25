@@ -14,10 +14,12 @@ import android.os.PowerManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Html
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -42,6 +44,7 @@ import harmony.valley.wamboocam.databinding.FragmentHomeBinding
 import harmony.valley.wamboocam.workers.ForegroundWorker
 import harmony.valley.wamboocam.workers.VideoCompressionWorker
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -83,11 +86,13 @@ class HomeFragment : Fragment() {
     private var videoformat = "mp4"
     private lateinit var progressDialog: AlertDialog
     private var showViews = true
+    private lateinit var currentPhotoPath: String
     var  init75 = 0.0
     var init40= 0.0
     var init70= 0.0
     var unidades = ""
     private lateinit var sharedPreferences: SharedPreferences
+    private var resolution = ""
     private val pickVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
@@ -713,26 +718,18 @@ class HomeFragment : Fragment() {
 
         }
         captureImage.setOnClickListener {
-
-
-            // if (isBatteryOptimizationDisabled()) {
             resetViews()
             shareVideo.visibility = View.GONE
             deleteVideo.visibility = View.GONE
+
             when {
                 ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED -> {
                     dispatchTakeImageIntent()
-
                 }
-
             }
-
-
-            //  }
-
         }
         rdOne.setOnClickListener {
             checkNotificationPermission()
@@ -986,18 +983,52 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    private fun dispatchTakeImageIntent() {
-        //val photoFile: File? = createImageFile() // Create a file to save the image
-        //val imageUri: Uri? = photoFile?.let { FileProvider.getUriForFile(requireContext(), "harmony.valley.wamboocam.provider", it) }
 
+    private fun Activity.getScreenSize(): Pair<Int, Int> {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val widthPixels = displayMetrics.widthPixels
+        val heightPixels = displayMetrics.heightPixels
+        return Pair(widthPixels, heightPixels)
+    }
+    private fun dispatchTakeImageIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takeImageIntent ->
             takeImageIntent.resolveActivity(requireContext().packageManager)?.also {
-                //takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri) // Set the output file for the captured image
-                takeImageLauncher.launch(takeImageIntent)
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    ex.printStackTrace()
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoUri: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "harmony.valley.wamboocam.provider",
+                        it
+                    )
+                    takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                    takeImageLauncher.launch(takeImageIntent)
+                }
             }
         }
     }
-
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: throw IOException("Failed to get external storage directory")
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
     private fun resetViews() {
         with(binding) {
 
@@ -1299,9 +1330,12 @@ class HomeFragment : Fragment() {
     }
     private fun saveBitmapToGallery(bitmap: Bitmap): Uri? {
         val imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val resolution = "${bitmap.width} x ${bitmap.height}"
+
         val imageDetails = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "captured_image.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RESOLUTION, resolution)
         }
 
         val contentResolver = requireContext().contentResolver
@@ -1318,18 +1352,40 @@ class HomeFragment : Fragment() {
 
         return imageUri
     }
-    private fun saveImageToGallery(imageUri: Uri) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "captured_image.jpg") // Set the desired image file name
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg") // Set the desired image MIME type
-            put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000) // Set the creation timestamp
-            put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis()) // Set the capture timestamp
-            put(MediaStore.Images.Media.DATA, imageUri.toString()) // Set the image file path
+    private fun saveImageToGallery(imagePath: String) {
+        val imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val contentResolver = requireContext().contentResolver
+
+        val imageDetails = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "captured_image.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+            put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         }
 
-        val contentResolver = requireContext().contentResolver
-        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        val imageUri = contentResolver.insert(imageCollection, imageDetails)
+
+        imageUri?.let { uri ->
+            contentResolver.openOutputStream(uri).use { outputStream ->
+                outputStream?.let {
+                    val inputStream = FileInputStream(imagePath)
+                    inputStream.copyTo(outputStream)
+                    inputStream.close()
+                    outputStream.flush()
+                }
+            }
+
+            imageView.setImageURI(imageUri)
+            imageView.isVisible = true
+
+            // Save the image to the gallery
+            val galleryImageDetails = ContentValues().apply {
+                put(MediaStore.Images.Media.DATA, imageUri.toString())
+            }
+            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, galleryImageDetails)
+        }
     }
+
     /*private fun createImageFile(): File? {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val imageFileName = "JPEG_${timeStamp}_"
@@ -1345,26 +1401,11 @@ class HomeFragment : Fragment() {
 
     private var takeImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val imageUri: Uri? = data?.data
-            if (imageUri != null) {
-                imageView.setImageURI(imageUri)
-                imageView.isVisible = true
+            // Image captured successfully
+            imageView.isVisible = true
 
-                saveImageToGallery(imageUri)
-            } else {
-                val extras = data?.extras
-                if (extras != null && extras.containsKey("data")) {
-                    val bitmap = extras.get("data") as? Bitmap
-                    if (bitmap != null) {
-                        val imageUriFromBitmap = saveBitmapToGallery(bitmap)
-                        if (imageUriFromBitmap != null) {
-                            imageView.setImageURI(imageUriFromBitmap)
-                            imageView.isVisible = true
-                        }
-                    }
-                }
-            }
+            // Save the image to the gallery
+            saveImageToGallery(currentPhotoPath)
         }
     }
 
