@@ -5,7 +5,12 @@ import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Matrix
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -45,12 +50,17 @@ import harmony.valley.wamboocam.workers.ForegroundWorker
 import harmony.valley.wamboocam.workers.VideoCompressionWorker
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import kotlin.math.round
 import java.util.*
+import androidx.exifinterface.media.ExifInterface
+
+
 private const val REQUEST_PICK_VIDEO = 1
+private const val REQUEST_PICK_IMAGE = 1
 private const val REQUEST_DELETE_VIDEO = 2
 private const val REQUEST_IMAGE_CAPTURE = 1
 
@@ -59,17 +69,23 @@ class HomeFragment : Fragment() {
     private lateinit var mAdView: AdView
     private lateinit var logoH : ImageView
     private var videoUrl: Uri? = null
-    private var imageUrl: Uri? = null
+    private var photoUri: Uri? = null
+    private var finalPhotoUri: Uri? = null
     private var compressedFilePath = ""
     private var typesSpinner=arrayOf("")
     private var formatsSpinner=arrayOf("")
     private var formatsValues=arrayOf("")
+    private var spinner6:Spinner?=null
     private lateinit var pref: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var mediaInformation : MediaInformationSession
     private var initialSize = ""
+    private var initSizeImage = ""
+    private var finalSizeImage = ""
     private lateinit var videoHeight : String
     private lateinit var  videoWidth : String
+    private var imageHeight = ""
+    private var  imageWidth = ""
     private var  videoResolution =""
     private var videoResolutionInit = ""
     private var  showSpeed =""
@@ -79,6 +95,7 @@ class HomeFragment : Fragment() {
     private lateinit var videoView: VideoView
     private lateinit var videoView2: VideoView
     private lateinit var imageView: ImageView
+    private lateinit var imageView2: ImageView
     private var audio = "-c:a copy"
     private lateinit var binding: FragmentHomeBinding
     private var selectedtype = "Ultrafast"
@@ -92,7 +109,9 @@ class HomeFragment : Fragment() {
     var init70= 0.0
     var unidades = ""
     private lateinit var sharedPreferences: SharedPreferences
-    private var resolution = ""
+    private var imageResolution = ""
+
+    private var selectedVideoUri: Uri? = null
     private val pickVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
@@ -108,8 +127,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    private var selectedVideoUri: Uri? = null
-
 
     //this receiver will trigger when the compression is completed
     private val videoCompressionCompletedReceiver = object : BroadcastReceiver() {
@@ -429,6 +446,7 @@ class HomeFragment : Fragment() {
         videoView = binding.root.findViewById(R.id.videoView)
         videoView2 = binding.root.findViewById(R.id.videoView2)
         imageView = binding.root.findViewById(R.id.imageView)
+        imageView2 = binding.root.findViewById(R.id.imageView2)
         showLoader()
     }
 
@@ -730,6 +748,59 @@ class HomeFragment : Fragment() {
                     dispatchTakeImageIntent()
                 }
             }
+            when (photoUri) {
+                null -> {
+                    binding.imageView.visibility = View.GONE
+                    Toast.makeText(
+                        context,
+                        Html.fromHtml("<font color='red' ><b>" + getString(R.string.capture_image) + "</b></font>"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+                else -> {
+                    compressImage.setOnClickListener {
+                        //clearPref()
+
+                        if (photoUri != null) {
+
+                            compressImage.isVisible = false
+
+                            saveImageWithDifferentResolution(currentPhotoPath,imageWidth.toInt(),imageHeight.toInt())
+
+
+                        } else {
+
+                            // If picked video is null or video is not picked
+                            binding.imageView.visibility = View.GONE
+
+                            binding.videoView2.visibility = View.GONE
+                            Toast.makeText(
+                                context,
+                                Html.fromHtml("<font color='red' ><b>" + getString(R.string.capture_image) + "</b></font>"),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                    }
+
+
+                    binding.shareImage.setOnClickListener {
+                        ShareCompat.IntentBuilder(requireActivity())
+                            .setStream(finalPhotoUri)
+                            .setType("image/jpeg")
+                            .setChooserTitle(getString(R.string.share_compressed_image)).startChooser()
+                        //binding.videoView.visibility = View.GONE
+
+                    }
+
+                    binding.deleteImage.setOnClickListener {
+                        deleteOriginalImageFromGallery(photoUri)
+
+
+                    }
+                }
+            }
         }
         rdOne.setOnClickListener {
             checkNotificationPermission()
@@ -749,7 +820,7 @@ class HomeFragment : Fragment() {
                 ).show()
 
             }
-            else -> {// Setting media controller to the video . So the user can pause and play the video . They will appear when user tap on video
+        }// Setting media controller to the video . So the user can pause and play the video . They will appear when user tap on video
                 videoView.setMediaController(MediaController(requireActivity()))
                 videoView2.setMediaController(MediaController(requireActivity()))
                 checkboxAudio.setOnCheckedChangeListener { checkboxAudio, _ ->
@@ -899,82 +970,85 @@ class HomeFragment : Fragment() {
                 //  binding.spinner.visibility=View.VISIBLE
 
 
-                compressVideo.setOnClickListener {
-                    //clearPref()
-                    statsContainer.visibility = View.GONE
-                    shareVideo.visibility = View.GONE
-                    deleteVideo.visibility = View.GONE
-                    binding.checkboxQuality.isChecked = false
-                    if (videoUrl != null) {
 
-                        compressVideo.isVisible = false
-                        val value =
-                            fileSize(videoUrl!!.length(requireActivity().contentResolver))
-                        editor.putString(INITIAL_SIZE, value)
-                        editor.commit()
-                        // When the compress video button is clicked we check if video is already playing then we pause it
-                        if (videoView.isPlaying) {
-                            videoView.pause()
-                        }
-                        if (videoView2.isPlaying) {
-                            videoView2.pause()
-                        }
 
-                        // Set up the input data for the worker
 
-                        val data2 =
-                            Data.Builder()
-                                .putString(ForegroundWorker.VideoURI, videoUrl?.toString())
-                                .putString(ForegroundWorker.SELECTION_TYPE, selectedtype)
-                                .putString(ForegroundWorker.SELECTION_FORMAT, selectedformat)
-                                .putString(ForegroundWorker.VIDEO_RESOLUTION, videoResolution)
-                                .putString(ForegroundWorker.COMPRESS_SPEED, compressSpeed)
-                                .putString(ForegroundWorker.VIDEO_CODEC, videoCodec)
-                                .putString(ForegroundWorker.VIDEO_AUDIO, audio).build()
 
-                        // Create the work request
-                        val myWorkRequest =
-                            OneTimeWorkRequestBuilder<VideoCompressionWorker>().setInputData(data2)
-                                .build()
 
-                        //initiating WorkManager to start compressing the video
-                        WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
 
-                    } else {
+        compressVideo.setOnClickListener {
+            //clearPref()
+            statsContainer.visibility = View.GONE
+            shareVideo.visibility = View.GONE
+            deleteVideo.visibility = View.GONE
+            binding.checkboxQuality.isChecked = false
+            if (videoUrl != null) {
 
-                        // If picked video is null or video is not picked
-                        binding.videoView.visibility = View.GONE
-
-                        binding.videoView2.visibility = View.GONE
-                        Toast.makeText(
-                            context,
-                            Html.fromHtml("<font color='red' ><b>" + getString(R.string.capture_video) + "</b></font>"),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
+                compressVideo.isVisible = false
+                val value =
+                    fileSize(videoUrl!!.length(requireActivity().contentResolver))
+                editor.putString(INITIAL_SIZE, value)
+                editor.commit()
+                // When the compress video button is clicked we check if video is already playing then we pause it
+                if (videoView.isPlaying) {
+                    videoView.pause()
+                }
+                if (videoView2.isPlaying) {
+                    videoView2.pause()
                 }
 
+                // Set up the input data for the worker
 
-                binding.shareVideo.setOnClickListener {
-                    ShareCompat.IntentBuilder(requireActivity())
-                        .setStream(Uri.parse(compressedFilePath))
-                        .setType("video/" + selectedformat)
-                        .setChooserTitle(getString(R.string.share_compressed_video)).startChooser()
-                    //binding.videoView.visibility = View.GONE
+                val data2 =
+                    Data.Builder()
+                        .putString(ForegroundWorker.VideoURI, videoUrl?.toString())
+                        .putString(ForegroundWorker.SELECTION_TYPE, selectedtype)
+                        .putString(ForegroundWorker.SELECTION_FORMAT, selectedformat)
+                        .putString(ForegroundWorker.VIDEO_RESOLUTION, videoResolution)
+                        .putString(ForegroundWorker.COMPRESS_SPEED, compressSpeed)
+                        .putString(ForegroundWorker.VIDEO_CODEC, videoCodec)
+                        .putString(ForegroundWorker.VIDEO_AUDIO, audio).build()
 
-                }
+                // Create the work request
+                val myWorkRequest =
+                    OneTimeWorkRequestBuilder<VideoCompressionWorker>().setInputData(data2)
+                        .build()
 
-                binding.deleteVideo.setOnClickListener {
-                    deleteOriginalVideoFromGallery(videoUrl)
+                //initiating WorkManager to start compressing the video
+                WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
 
+            } else {
 
-                }
+                // If picked video is null or video is not picked
+                binding.videoView.visibility = View.GONE
 
-
+                binding.videoView2.visibility = View.GONE
+                Toast.makeText(
+                    context,
+                    Html.fromHtml("<font color='red' ><b>" + getString(R.string.capture_video) + "</b></font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }
+
+
+        binding.shareVideo.setOnClickListener {
+            ShareCompat.IntentBuilder(requireActivity())
+                .setStream(Uri.parse(compressedFilePath))
+                .setType("video/" + selectedformat)
+                .setChooserTitle(getString(R.string.share_compressed_video)).startChooser()
+            //binding.videoView.visibility = View.GONE
+
+        }
+
+        binding.deleteVideo.setOnClickListener {
+            deleteOriginalVideoFromGallery(videoUrl)
+
+
+        }
+
+
     }
     private fun dispatchTakeVideoIntent() {
         Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
@@ -983,6 +1057,122 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+
+
+    private fun saveImageWithDifferentResolution(imagePath: String, targetWidth: Int, targetHeight: Int) {
+        val contentResolver = requireContext().contentResolver
+        val imageFileName = "Wamboo_image_${System.currentTimeMillis()}.jpg" // Generate a unique file name
+
+        // Load the original image from file
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(imagePath, options)
+
+        // Get the original image dimensions
+        val originalWidth = options.outWidth
+        val originalHeight = options.outHeight
+
+        // Calculate the aspect ratio of the original image
+        val aspectRatio = originalWidth.toFloat() / originalHeight.toFloat()
+
+        // Calculate the target aspect ratio
+        val targetAspectRatio = targetWidth.toFloat() / targetHeight.toFloat()
+
+        // Determine the resized width and height based on the target aspect ratio
+        val resizedWidth: Int
+        val resizedHeight: Int
+
+        if (targetAspectRatio > aspectRatio) {
+            resizedWidth = targetWidth
+            resizedHeight = (targetWidth / aspectRatio).toInt()
+        } else {
+            resizedWidth = (targetHeight * aspectRatio).toInt()
+            resizedHeight = targetHeight
+        }
+
+        // Calculate the sample size to resize the image
+        val sampleSize = calculateSampleSize(originalWidth, originalHeight, resizedWidth, resizedHeight)
+
+        // Load the resized image using the calculated sample size
+        options.inJustDecodeBounds = false
+        options.inSampleSize = sampleSize
+        val bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+        // Resize the bitmap to match the target dimensions exactly
+        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, true)
+
+        // Obtain the orientation of the original image from EXIF data
+        val exif = ExifInterface(imagePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+
+        // Apply the correct rotation to the resized bitmap based on the EXIF orientation
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.setRotate(270f)
+        }
+
+        val rotatedResizedBitmap =
+            Bitmap.createBitmap(resizedBitmap, 0, 0, resizedWidth, resizedHeight, matrix, true)
+
+        // Create a new bitmap with the desired final resolution
+        val finalBitmap = Bitmap.createScaledBitmap(
+            rotatedResizedBitmap,
+            targetWidth,
+            targetHeight,
+            true
+        )
+
+        // Save the final image
+        val imageDetails = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+            put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        }
+
+        val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, imageDetails)
+        finalPhotoUri = imageUri
+        imageUri?.let { uri ->
+            contentResolver.openOutputStream(uri).use { outputStream ->
+                outputStream?.let {
+                    finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream) // Adjust the quality as desired
+                }
+            }
+
+            imageView2.setImageURI(imageUri)
+            imageView2.isVisible = true
+            imageView.isVisible = true
+            spinner6?.isVisible = false
+            binding.shareImage.isVisible=true
+            binding.reset.isVisible=true
+            binding.compressImage.isVisible = false
+            binding.deleteImage.isVisible = true
+        }
+    }
+
+
+
+    private fun calculateSampleSize(imageWidth: Int, imageHeight: Int, targetWidth: Int, targetHeight: Int): Int {
+        var sampleSize = 1
+
+        if (imageWidth > targetWidth || imageHeight > targetHeight) {
+            val widthRatio = Math.ceil((imageWidth.toFloat() / targetWidth.toFloat()).toDouble()).toInt()
+            val heightRatio = Math.ceil((imageHeight.toFloat() / targetHeight.toFloat()).toDouble()).toInt()
+
+            sampleSize = if (heightRatio > widthRatio) heightRatio else widthRatio
+        }
+
+        return sampleSize
+    }
+
+
+
+
+
+
 
     private fun Activity.getScreenSize(): Pair<Int, Int> {
         val displayMetrics = DisplayMetrics()
@@ -1004,7 +1194,7 @@ class HomeFragment : Fragment() {
                 }
                 // Continue only if the File was successfully created
                 photoFile?.also {
-                    val photoUri: Uri = FileProvider.getUriForFile(
+                    photoUri = FileProvider.getUriForFile(
                         requireContext(),
                         "harmony.valley.wamboocam.provider",
                         it
@@ -1036,6 +1226,11 @@ class HomeFragment : Fragment() {
             captureVideo.isVisible = true
             captureImage.isVisible = true
             spinner.isVisible=false
+            spinner6.isVisible=false
+            imageView2.isVisible = false
+            imageView.isVisible = false
+            deleteImage.isVisible = false
+            shareImage.isVisible=false
             spinner5.isVisible=false
             spinner2.isVisible=false
             spinner3.isVisible=false
@@ -1058,7 +1253,147 @@ class HomeFragment : Fragment() {
             binding.quality.text =""
             spinner.setSelection(0)
             spinner5.setSelection(0)
+            spinner6.setSelection(0)
         }
+    }
+    /*private fun getMaxCameraResolution(context: Context): Pair<Int, Int>? {
+        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraId = cameraManager.cameraIdList[0]
+        val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+
+        val streamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+        val supportedSizes = streamConfigurationMap?.getOutputSizes(android.graphics.ImageFormat.JPEG)
+
+        var maxResolution: Pair<Int, Int>? = null
+
+        var maxSize = 0
+
+        supportedSizes?.forEach { size ->
+            val resolution = size.width * size.height
+
+            if (resolution > maxSize) {
+                maxSize = resolution
+                maxResolution = Pair(size.width, size.height)
+            }
+        }
+
+        return maxResolution
+    }*/
+
+    private fun getImageResolution(photoUri: Uri): Pair<Int, Int>? {
+        val inputStream = try {
+            requireContext().contentResolver.openInputStream(photoUri)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeStream(inputStream, null, options)
+
+        try {
+            inputStream?.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        val imageWidth = options.outWidth
+        val imageHeight = options.outHeight
+
+        return if (imageWidth > 0 && imageHeight > 0) {
+            Pair(imageWidth, imageHeight)
+        } else {
+            null
+        }
+    }
+
+    private fun addSpinnerImageResolution():Spinner {
+
+
+        binding.spinner6.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        var resolutionSpinner =arrayOf("")
+        var resolutionValues =arrayOf("")
+        when (photoUri) {
+            null -> {
+
+
+
+
+            }
+            else -> {
+                val resolution = getImageResolution(photoUri!!)
+                imageResolution=resolution.toString()
+                if (resolution != null) {
+                    imageWidth = resolution.second.toString()
+                    imageHeight = resolution.first.toString()
+                    println("Image resolution: $imageWidth x $imageHeight")
+                } else {
+                    println("Failed to get image resolution.")
+                }
+
+                resolutionSpinner = arrayOf(
+                    getString(R.string.select_resolution),
+                    imageWidth + "x" + imageHeight + "(Original)",
+                    "${(round((imageWidth.toDouble() * 0.7)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.7)/2)*2).toInt()}" + " (70%)",
+                    "${(round((imageWidth.toDouble() * 0.5)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.5)/2)*2).toInt()}" + " (50%)",
+                    "${(round((imageWidth.toDouble() * 0.25)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.25)/2)*2).toInt()}" + " (25%)",
+                    "${(round((imageWidth.toDouble() * 0.05)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.05)/2)*2).toInt()}" + " (5%)"
+                )
+                resolutionValues = arrayOf(
+                    imageWidth + "x" + imageHeight,
+                    imageWidth + "x" + imageHeight,
+                    "${(round((imageWidth.toDouble() * 0.7)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.7)/2)*2).toInt()}",
+                    "${(round((imageWidth.toDouble() * 0.5)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.5)/2)*2).toInt()}",
+                    "${(round((imageWidth.toDouble() * 0.25)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.25)/2)*2).toInt()}",
+                    "${(round((imageWidth.toDouble() * 0.05)/2)*2).toInt()}" + "x" + "${(round((imageHeight.toDouble() * 0.05)/2)*2).toInt()}"
+                )
+
+            }
+        }
+
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_list, resolutionSpinner)
+        binding.spinner6.adapter = arrayAdapter
+        /*with(binding.spinner3)
+        {setSelection(0, false)}*/
+        binding.spinner6.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) { imageResolution =resolutionValues[position]
+                val resolutionParts = imageResolution.split("x")
+                imageWidth = resolutionParts.getOrNull(0) ?: ""
+                imageHeight = resolutionParts.getOrNull(1) ?: ""
+                when (position) {
+                    0->{Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.no_selected_resolution),
+                        Toast.LENGTH_SHORT
+                    ).show()}
+                    else ->{Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.selected_resolution) + " " + resolutionSpinner[position],
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    }
+                }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+
+        }
+        // Add Spinner to LinearLayout
+
+        binding.spinner6.visibility=View.VISIBLE
+        return binding.spinner6
+
     }
     private fun addSpinnerResolution():Spinner {
 
@@ -1313,6 +1648,24 @@ class HomeFragment : Fragment() {
 
 
     }
+    private fun deleteOriginalImageFromGallery(imageUri: Uri?) {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        //startActivityForResult(intent, REQUEST_PICK_IMAGE)
+        imageUri?.let { imageUri ->
+            val deleteIntent = Intent(Intent.ACTION_VIEW)
+            deleteIntent.setDataAndType(imageUri, "image/*")
+            deleteIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            deleteIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+
+            startActivity(deleteIntent)
+        }
+        binding.imageView.isVisible= false
+        binding.deleteImage.isVisible= false
+        photoUri = intent.data
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -1322,89 +1675,68 @@ class HomeFragment : Fragment() {
             // Handle the selected video URI
 
         }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             imageView.setImageBitmap(imageBitmap)
             imageView.isVisible = true
+
+            spinner6?.isVisible = true
+            binding.compressImage.isVisible=true
+        }*/
+        if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            photoUri = data?.data
+            // Call the delete function or perform any other actions with the selected image URI
+
         }
     }
-    private fun saveBitmapToGallery(bitmap: Bitmap): Uri? {
-        val imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-        val resolution = "${bitmap.width} x ${bitmap.height}"
 
-        val imageDetails = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "captured_image.jpg")
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            put(MediaStore.Images.Media.RESOLUTION, resolution)
-        }
-
-        val contentResolver = requireContext().contentResolver
-        val imageUri = contentResolver.insert(imageCollection, imageDetails)
-
-        imageUri?.let { uri ->
-            contentResolver.openOutputStream(uri).use { outputStream ->
-                outputStream?.let {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-                    outputStream.flush()
-                }
-            }
-        }
-
-        return imageUri
-    }
     private fun saveImageToGallery(imagePath: String) {
-        val imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
         val contentResolver = requireContext().contentResolver
 
+        val imageFileName = "captured_image_${System.currentTimeMillis()}.jpg" // Generate a unique file name
         val imageDetails = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "captured_image.jpg")
+            put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName)
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
             put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
             put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         }
 
-        val imageUri = contentResolver.insert(imageCollection, imageDetails)
-
+        val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, imageDetails)
+        photoUri = imageUri
         imageUri?.let { uri ->
-            contentResolver.openOutputStream(uri).use { outputStream ->
-                outputStream?.let {
-                    val inputStream = FileInputStream(imagePath)
-                    inputStream.copyTo(outputStream)
-                    inputStream.close()
-                    outputStream.flush()
-                }
+            contentResolver.openOutputStream(uri)?.use { outputStream ->
+                val inputStream = FileInputStream(imagePath)
+                inputStream.copyTo(outputStream)
+                inputStream.close()
+                outputStream.flush()
             }
 
             imageView.setImageURI(imageUri)
             imageView.isVisible = true
-
-            // Save the image to the gallery
-            val galleryImageDetails = ContentValues().apply {
-                put(MediaStore.Images.Media.DATA, imageUri.toString())
-            }
-            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, galleryImageDetails)
+            spinner6 = addSpinnerImageResolution()
+            spinner6?.isVisible = true
+            binding.compressImage.isVisible = true
+            binding.shareImage.isVisible = false
         }
     }
 
-    /*private fun createImageFile(): File? {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val imageFileName = "JPEG_${timeStamp}_"
-        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
-        return try {
-            File.createTempFile(imageFileName, ".jpg", storageDir)
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }*/
+
 
     private var takeImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // Image captured successfully
-            imageView.isVisible = true
-
+            //imageView.isVisible = true
+            //binding.compressImage.isVisible=true
             // Save the image to the gallery
+            /*val data: Intent? = result.data
+            if (data != null) {
+                currentPhotoPath = data?.data.toString()
+            }
+            else
+            {
+                currentPhotoPath =photoUri.toString()
+            }*/
             saveImageToGallery(currentPhotoPath)
         }
     }

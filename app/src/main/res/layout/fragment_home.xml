@@ -42,7 +42,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custum_button"
                 android:fontFamily="@font/bauhausregular"
-                android:text="@string/capture_video"
+                android:text="@string/capture_image"
                 android:textColor="@color/white"
                 android:textFontWeight="700" />
         </LinearLayout>
@@ -74,6 +74,14 @@
                 android:contentDescription="video view"/>
             <ImageView
                 android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:contentDescription="image preview"/>
+            <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
@@ -127,6 +135,14 @@
                 android:textFontWeight="1000"
                 android:textColor="@color/grey"
                 android:visibility="gone"/>-->
+            <Spinner
+                android:id="@+id/spinner6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textSize="30sp"
+                android:visibility="gone"/>
             <Spinner
                 android:id="@+id/spinner5"
                 android:layout_width="match_parent"
@@ -189,7 +205,44 @@
                 android:text="@string/delete_video"
                 android:textColor="@color/white"
                 android:visibility="gone" />
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/compressImage"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/custum_button"
+                android:fontFamily="@font/bauhausregular"
+                android:text="@string/compress_image"
+                android:textColor="@color/white"
+                android:textFontWeight="700"
+                android:visibility="gone"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/shareImage"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custum_button"
+                android:fontFamily="@font/bauhausregular"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/share_compressed_image"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/deleteImage"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custum_button"
+                android:fontFamily="@font/bauhausregular"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/delete_image"
+                android:textColor="@color/white"
+                android:visibility="gone" />
             <LinearLayout
                 android:id="@+id/statsContainer"
                 android:layout_width="match_parent"

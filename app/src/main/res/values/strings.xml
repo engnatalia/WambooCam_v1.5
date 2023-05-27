@@ -7,6 +7,7 @@
     <string name="contact1">Comments or questions? What features would you like to see in the next version of Wamboo?</string>
     <string name="contact">Contact us: contact.harmonyvalley@gmail.com</string>
 	<string name="capture_video">Capture Video</string>
+    <string name="capture_image">Capture Image</string>
     <string name="ultrafast">Ultrafast</string>
     <string name="good">Good</string>
     <string name="best">Best but slow</string>
@@ -16,7 +17,9 @@
     <string name="good_description">"Best quality vs. compression speed and size reduction"</string>
     <string name="best_description">"Best size reduction and quality but it's the slowest"</string>
     <string name="compress_video">Compress Video</string>
+    <string name="compress_image">Compress Image</string>
     <string name="share_compressed_video">Share Compressed Video</string>
+    <string name="share_compressed_image">Share Compressed Image</string>
     <string name="None">None</string>
     <string name="initial_size">Initial size = </string>
     <string name="compressed_size">Compressed size = </string>
@@ -88,6 +91,7 @@
     <string name="compression">reduction (at least)</string>
     <string name="compressed">compressed</string>
     <string name="delete_video">Delete non-compressed video</string>
+    <string name="delete_image">Delete non-compressed image</string>
     <string name="background">Allow background compression</string>
     <string name="background2">Background compression already enabled!</string>
     <string name="noreduction">Bigger file because original was already compressed or had poor quality!</string>
