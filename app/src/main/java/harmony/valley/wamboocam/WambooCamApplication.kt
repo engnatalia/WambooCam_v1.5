@@ -6,7 +6,4 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class WambooCamApplication : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-    }
 }

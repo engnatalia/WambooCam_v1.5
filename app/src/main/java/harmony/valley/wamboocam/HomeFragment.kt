@@ -17,7 +17,6 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.provider.Settings
 import android.text.Html
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -53,8 +52,6 @@ import java.io.*
 
 private const val REQUEST_PICK_VIDEO = 1
 private const val REQUEST_PICK_IMAGE = 1
-private const val REQUEST_DELETE_VIDEO = 2
-private const val REQUEST_IMAGE_CAPTURE = 1
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
@@ -74,7 +71,6 @@ class HomeFragment : Fragment() {
     private var initialSize = ""
     private var initImageSize = ""
     private var finalImageSize = ""
-    private var reductionPercentage = ""
     private lateinit var videoHeight : String
     private lateinit var  videoWidth : String
     private var imageHeight = ""
@@ -101,26 +97,11 @@ class HomeFragment : Fragment() {
     var init40= 0.0
     var init70= 0.0
     var unidades = ""
-    private lateinit var sharedPreferences: SharedPreferences
     private var imageResolution = ""
     private var isCameraRotated = false // Initialize the rotation flag
 
     private var selectedVideoUri: Uri? = null
-    private val pickVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            videoUrl = data?.data
-            // Handle the selected video URI
-        }
-    }
-    private val deleteVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            videoUrl?.let { videoUri ->
-                // The video has been deleted, perform necessary actions
-                // after deleting the selected video
-            }
-        }
-    }
+
 
     //this receiver will trigger when the compression is completed
     private val videoCompressionCompletedReceiver = object : BroadcastReceiver() {
@@ -453,25 +434,20 @@ class HomeFragment : Fragment() {
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
 
         if (!areNotificationsEnabled) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                 // Create a channel for your notifications
                 val channel = NotificationChannel(
                     "channel_id", "My Channel", NotificationManager.IMPORTANCE_DEFAULT
                 )
-                val notificationManager =
+                val notificationManager2 =
                     requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.createNotificationChannel(channel)
+                notificationManager2.createNotificationChannel(channel)
 
                 // Ask the user to allow your app to show notifications
                 val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
                 startActivity(intent)
-            } else {
-                // Ask the user to allow your app to show notifications
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
-                startActivity(intent)
-            }
+
 
         }
 
@@ -523,10 +499,11 @@ class HomeFragment : Fragment() {
             ) != PackageManager.PERMISSION_GRANTED -> {
 
 
-
-                requestPermissionLauncher.launch(
-                    Manifest.permission.READ_MEDIA_IMAGES,
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    requestPermissionLauncher.launch(
+                        Manifest.permission.READ_MEDIA_IMAGES,
+                    )
+                }
 
             }
         }
@@ -550,9 +527,11 @@ class HomeFragment : Fragment() {
             ) != PackageManager.PERMISSION_GRANTED -> {
 
 
-                requestPermissionLauncher.launch(
-                    Manifest.permission.READ_MEDIA_VIDEO,
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    requestPermissionLauncher.launch(
+                        Manifest.permission.READ_MEDIA_VIDEO,
+                    )
+                }
 
             }
         }
@@ -1341,29 +1320,7 @@ class HomeFragment : Fragment() {
             spinner6.setSelection(0)
         }
     }
-    /*private fun getMaxCameraResolution(context: Context): Pair<Int, Int>? {
-        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val cameraId = cameraManager.cameraIdList[0]
-        val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
-        val streamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-        val supportedSizes = streamConfigurationMap?.getOutputSizes(android.graphics.ImageFormat.JPEG)
-
-        var maxResolution: Pair<Int, Int>? = null
-
-        var maxSize = 0
-
-        supportedSizes?.forEach { size ->
-            val resolution = size.width * size.height
-
-            if (resolution > maxSize) {
-                maxSize = resolution
-                maxResolution = Pair(size.width, size.height)
-            }
-        }
-
-        return maxResolution
-    }*/
 
     private fun getImageResolution(photoUri: Uri): Pair<Int, Int>? {
         val inputStream = try {
@@ -1723,9 +1680,9 @@ class HomeFragment : Fragment() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
         intent.type = "video/*"
         startActivityForResult(intent, REQUEST_PICK_VIDEO)
-        videoUri?.let { videoUri ->
+        videoUri?.let { videoUri2 ->
             val deleteIntent = Intent(Intent.ACTION_VIEW)
-            deleteIntent.setDataAndType(videoUri, "video/*")
+            deleteIntent.setDataAndType(videoUri2, "video/*")
             deleteIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             deleteIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
 
@@ -1742,9 +1699,9 @@ class HomeFragment : Fragment() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
         //startActivityForResult(intent, REQUEST_PICK_IMAGE)
-        imageUri?.let { imageUri ->
+        imageUri?.let { imageUri2 ->
             val deleteIntent = Intent(Intent.ACTION_VIEW)
-            deleteIntent.setDataAndType(imageUri, "image/*")
+            deleteIntent.setDataAndType(imageUri2, "image/*")
             deleteIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             deleteIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
 
@@ -1756,6 +1713,7 @@ class HomeFragment : Fragment() {
     }
 
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -1819,17 +1777,7 @@ class HomeFragment : Fragment() {
     private var takeImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // Image captured successfully
-            //imageView.isVisible = true
-            //binding.compressImage.isVisible=true
-            // Save the image to the gallery
-            /*val data: Intent? = result.data
-            if (data != null) {
-                currentPhotoPath = data?.data.toString()
-            }
-            else
-            {
-                currentPhotoPath =photoUri.toString()
-            }*/
+
             saveImageToGallery(currentPhotoPath)
         }
     }
@@ -1851,9 +1799,7 @@ If there is an error in the process, an error message is displayed to the user v
                     videoView.start()
                     binding.spinner.isVisible = true
                     binding.spinner5.isVisible = true
-                    /*binding.spinner2.isVisible = true
-                    binding.spinner3.isVisible = true
-                    binding.spinner4.isVisible = true*/
+
                     binding.checkboxAudio.isVisible=true
                     videoUrl=it
 

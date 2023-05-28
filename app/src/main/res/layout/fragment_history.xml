@@ -137,9 +137,9 @@
             android:id="@+id/adView3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rgTypes"
+            app:layout_constraintTop_toBottomOf="@id/rgTypes"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6983852485981992/8859021238" />
+            ads:adUnitId="ca-app-pub-6983852485981992/1282573067" />
     </LinearLayout>
     </ScrollView>
 

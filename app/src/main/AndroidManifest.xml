@@ -46,7 +46,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6983852485981992~2337782903" />
+            android:value="ca-app-pub-6983852485981992~8805839860" />
 
         <service
             android:name=".services.VideoCompressionService"

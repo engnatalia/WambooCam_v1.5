@@ -30,7 +30,7 @@ class InfoFragment : Fragment() {
         mAdView2.loadAd(adRequest)
         //return inflater.inflate(R.layout.fragment_info, container, false)
         view =binding.root.findViewById(R.id.planet)
-        view.setOnClickListener(){
+        view.setOnClickListener {
             val intent = Intent()
             intent.action = Intent.ACTION_VIEW
             intent.addCategory(Intent.CATEGORY_BROWSABLE)

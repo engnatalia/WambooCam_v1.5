@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-6983852485981992/7730687729" />
+                ads:adUnitId="ca-app-pub-6983852485981992/8614268179" />
             <ImageView
                 android:id="@+id/planet"
                 android:layout_width="wrap_content"

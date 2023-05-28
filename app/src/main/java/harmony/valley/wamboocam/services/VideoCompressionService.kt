@@ -13,7 +13,6 @@ import android.os.*
 import android.provider.MediaStore
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.net.toUri
 import com.arthenica.ffmpegkit.FFmpegKit
 import com.arthenica.ffmpegkit.FFmpegKitConfig
 import com.arthenica.ffmpegkit.FFprobeKit
@@ -26,7 +25,6 @@ import harmony.valley.wamboocam.*
 import harmony.valley.wamboocam.models.CompressData
 import harmony.valley.wamboocam.repository.CompressRepository
 import harmony.valley.wamboocam.workers.ForegroundWorker
-import java.io.File
 import java.math.RoundingMode
 import kotlin.math.abs
 import java.text.SimpleDateFormat
@@ -38,8 +36,6 @@ class VideoCompressionService : Service() {
     private lateinit var notificationManager: NotificationManager
     private lateinit var builder2: NotificationCompat.Builder
     private var wakeLock: PowerManager.WakeLock? = null
-    private lateinit var  frames : String
-    private lateinit var  frames2 : Any
     @Inject
     lateinit var compressRepo: CompressRepository		   
 
@@ -74,24 +70,22 @@ class VideoCompressionService : Service() {
         wakeLock =
             (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
                 newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "VideoCompress::lock").apply {
-                    acquire()
+                    acquire(10*60*1000L /*10 minutes*/)
                 }
             }
 
         notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
-            channel.setShowBadge(false)
-            channel.setSound(null, null)
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel =
+            NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+        channel.setShowBadge(false)
+        channel.setSound(null, null)
+        notificationManager.createNotificationChannel(channel)
 
         pref = getSharedPreferences(packageName, Context.MODE_PRIVATE)
 
@@ -136,8 +130,7 @@ class VideoCompressionService : Service() {
         audio: String?
 
     ) {
-        val root: String = Environment.getExternalStorageDirectory().toString()
-        val appFolder = "$root/GFG/"
+
         val outPutSafeUri: String
         val command: String
         var uriPath: Uri? = null
@@ -146,69 +139,50 @@ class VideoCompressionService : Service() {
         val bm = getSystemService(BATTERY_SERVICE) as BatteryManager
         val initcapacity: Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // With introduction of scoped storage in Android Q the primitive method gives error
-            // So, it is recommended to use the below method to create a video file in storage.
-            val valuesVideos = ContentValues()
-            valuesVideos.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/" + "Wamboo")
-            valuesVideos.put(MediaStore.Video.Media.TITLE, filePrefix + System.currentTimeMillis())
-            valuesVideos.put(
-                MediaStore.Video.Media.DISPLAY_NAME,
-                filePrefix + System.currentTimeMillis() + fileExtn
-            )
+        // With introduction of scoped storage in Android Q the primitive method gives error
+        // So, it is recommended to use the below method to create a video file in storage.
+        val valuesVideos = ContentValues()
+        valuesVideos.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/" + "Wamboo")
+        valuesVideos.put(MediaStore.Video.Media.TITLE, filePrefix + System.currentTimeMillis())
+        valuesVideos.put(
+            MediaStore.Video.Media.DISPLAY_NAME,
+            filePrefix + System.currentTimeMillis() + fileExtn
+        )
 
 
-            when (fileExtn) {
-                ".mkv"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mkv")
-                }
-                ".3gp"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/3gp")
-                }
-                ".mp4"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-                }
-                ".avi"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/avi")
-                }
-                ".mov"->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mov")
-                }
-                else->{
-                    valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-                }
+        when (fileExtn) {
+            ".mkv"->{
+                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mkv")
             }
-
-            valuesVideos.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
-            valuesVideos.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis())
-            val uri = contentResolver.insert(
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                valuesVideos
-            )
-
-            if (uri != null) {
-                uriPath = uri
+            ".3gp"->{
+                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/3gp")
             }
-
-            outPutSafeUri = FFmpegKitConfig.getSafParameterForWrite(this, uri)
-        } else {
-            // This else statement will work for devices with Android version lower than 10
-            // Here, "app_folder" is the path to your app's root directory in device storage
-            var dest = File(File(appFolder), filePrefix + fileExtn)
-            var fileNo = 0
-            // check if the file name previously exist. Since we don't want
-            // to overwrite the video files
-            while (dest.exists()) {
-                fileNo++
-                dest = File(File(appFolder), filePrefix + fileNo + fileExtn)
+            ".mp4"->{
+                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
             }
-
-            outPutSafeUri =
-                FFmpegKitConfig.getSafParameterForWrite(this, dest.toUri())
-
-            // Get the filePath once the file is successfully created.
-            uriPath = dest.toUri()
+            ".avi"->{
+                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/avi")
+            }
+            ".mov"->{
+                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mov")
+            }
+            else->{
+                valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+            }
         }
+
+        valuesVideos.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+        valuesVideos.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis())
+        val uri = contentResolver.insert(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+            valuesVideos
+        )
+
+        if (uri != null) {
+            uriPath = uri
+        }
+
+        outPutSafeUri = FFmpegKitConfig.getSafParameterForWrite(this, uri)
         //get the input video duration
         val mediaInformation = FFprobeKit.getMediaInformation(
             FFmpegKitConfig.getSafParameterForRead(
@@ -288,7 +262,7 @@ class VideoCompressionService : Service() {
                 val compressedSize = uriPath?.length(contentResolver)
                     ?.let { fileSize(it) }
                 var sizeReduction = 0.toBigDecimal()
-                if (compressedSize != null && initialSize != null) {
+                if (compressedSize != null) {
 
                     val finalSize = compressedSize.substringBefore(" ")
                     val finalS = finalSize.replace(",",".").toDouble()
@@ -415,8 +389,5 @@ class VideoCompressionService : Service() {
             "%02d",
             mn
         ) + ":" + String.format("%02d", sec)
-    }
-	override fun onDestroy() {
-        super.onDestroy()
     }
 }

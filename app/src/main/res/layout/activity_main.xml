@@ -18,7 +18,7 @@
         app:tabMode="fixed"
         app:tabSelectedTextColor="#FF5722"
         app:tabTextColor="#FF5722"
-        android:contentDescription="@null"/>
+        android:contentDescription="app layout"/>
 
     <!--viewpager to show different pages-->
     <androidx.viewpager2.widget.ViewPager2
