@@ -8,15 +8,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Matrix
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraManager
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.provider.Settings
 import android.text.Html
 import android.util.DisplayMetrics
@@ -24,16 +22,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.work.*
@@ -48,15 +43,12 @@ import kotlinx.coroutines.*
 import harmony.valley.wamboocam.databinding.FragmentHomeBinding
 import harmony.valley.wamboocam.workers.ForegroundWorker
 import harmony.valley.wamboocam.workers.VideoCompressionWorker
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import kotlin.math.round
 import java.util.*
 import androidx.exifinterface.media.ExifInterface
+import java.io.*
 
 
 private const val REQUEST_PICK_VIDEO = 1
@@ -80,8 +72,9 @@ class HomeFragment : Fragment() {
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var mediaInformation : MediaInformationSession
     private var initialSize = ""
-    private var initSizeImage = ""
-    private var finalSizeImage = ""
+    private var initImageSize = ""
+    private var finalImageSize = ""
+    private var reductionPercentage = ""
     private lateinit var videoHeight : String
     private lateinit var  videoWidth : String
     private var imageHeight = ""
@@ -309,6 +302,7 @@ class HomeFragment : Fragment() {
         binding.reset.visibility = View.VISIBLE
         binding.shareVideo.visibility = View.VISIBLE
         binding.statsContainer.visibility = View.VISIBLE
+        binding.statsContainer2.visibility = View.GONE
         binding.initialSizeTV.text = initialSize
         binding.compressedSizeTV.text = compressedSize
         binding.conversionTimeTV.text = conversionTime
@@ -321,6 +315,7 @@ class HomeFragment : Fragment() {
         if (pollution > 0) {
             binding.co2TV.setTextColor(Color.parseColor("#FF0000"))
             binding.co2TV.text = co2+ "kgCO2"
+
 
         }else{
             binding.co2TV.setTextColor(Color.parseColor("#6F9F3A"))
@@ -761,7 +756,7 @@ class HomeFragment : Fragment() {
                 else -> {
                     compressImage.setOnClickListener {
                         //clearPref()
-
+                        binding.statsContainer2.visibility = View.GONE
                         if (photoUri != null) {
 
                             compressImage.isVisible = false
@@ -979,6 +974,7 @@ class HomeFragment : Fragment() {
         compressVideo.setOnClickListener {
             //clearPref()
             statsContainer.visibility = View.GONE
+            statsContainer2.visibility = View.GONE
             shareVideo.visibility = View.GONE
             deleteVideo.visibility = View.GONE
             binding.checkboxQuality.isChecked = false
@@ -1142,6 +1138,7 @@ class HomeFragment : Fragment() {
                 }
             }
 
+
             imageView2.setImageURI(imageUri)
             imageView2.isVisible = true
             imageView.isVisible = true
@@ -1151,8 +1148,99 @@ class HomeFragment : Fragment() {
             binding.compressImage.isVisible = false
             binding.deleteImage.isVisible = true
         }
+        if (finalPhotoUri!=null){
+            Toast.makeText(
+                context,
+                Html.fromHtml("<font color='red' ><b>" + getString(R.string.scroll) + "</b></font>"),
+                Toast.LENGTH_SHORT
+            ).show()
+            if (finalPhotoUri != null) {
+                val inputImageFile = File(imagePath)
+
+                initImageSize = getFileSize(inputImageFile)
+                finalImageSize = getFileSizeFromUri(requireContext(), imageUri!!)
+
+                val initImageSizeNoUnits = inputImageFile.length()
+                val finalImageSizeNoUnits = getFileSizeFromUriNoUnits(requireContext(), imageUri)
+
+                // Calculate the percentage reduction in size
+                val reductionPercentage = calculateReductionPercentage(
+                    initImageSizeNoUnits.toInt(),
+                    finalImageSizeNoUnits.toInt()
+                ).toString()
+
+                binding.statsContainer2.visibility = View.VISIBLE
+                binding.initImageSize.text = initImageSize
+                binding.finalImageSize.text = finalImageSize
+                binding.minPollutionAvoided.text = buildString {
+                    append(reductionPercentage.toBigDecimal().setScale(2,
+                        RoundingMode.UP))
+                    append("%")
+                    append("\n")
+                    append(getString(R.string.congrats))
+                }
+            }
+
+
+        }
+    }
+    private fun getFileSizeFromUriNoUnits(context: Context, uri: Uri): Long {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+                if (sizeIndex != -1) {
+                    return it.getLong(sizeIndex)
+                }
+            }
+        }
+        return 0L
     }
 
+    private fun getFileSizeFromUri(context: Context, uri: Uri): String {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+                if (sizeIndex != -1) {
+                    val fileSizeInBytes = it.getLong(sizeIndex)
+                    val kiloBytes = fileSizeInBytes / 1024f
+                    val megaBytes = kiloBytes / 1024f
+                    val fileSizeString = if (megaBytes >= 1) {
+                        String.format("%.2f MB", megaBytes)
+                    } else {
+                        String.format("%.2f KB", kiloBytes)
+                    }
+                    return fileSizeString.replace(",", ".") // Replace comma from the file size string
+                }
+            }
+        }
+        return ""
+    }
+
+    // Helper function to calculate the image size in KB or MB
+
+    private fun getFileSize(file: File): String {
+        val fileSizeInBytes = file.length()
+        val kiloBytes = fileSizeInBytes / 1024f
+        val megaBytes = kiloBytes / 1024f
+        val fileSizeString = if (megaBytes >= 1) {
+            String.format("%.2f MB", megaBytes)
+        } else {
+            String.format("%.2f KB", kiloBytes)
+        }
+        return fileSizeString.replace(",", ".") // Replace comma from the file size string
+    }
+
+    // Helper function to get the image size in bytes
+
+    private fun calculateReductionPercentage(initialSize: Int, finalSize: Int): Float {
+        return if (initialSize > 0) {
+            ((initialSize - finalSize) / initialSize.toFloat()) * 100
+        } else {
+            0f
+        }
+    }
 
 
     private fun calculateSampleSize(imageWidth: Int, imageHeight: Int, targetWidth: Int, targetHeight: Int): Int {
@@ -1174,13 +1262,7 @@ class HomeFragment : Fragment() {
 
 
 
-    private fun Activity.getScreenSize(): Pair<Int, Int> {
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val widthPixels = displayMetrics.widthPixels
-        val heightPixels = displayMetrics.heightPixels
-        return Pair(widthPixels, heightPixels)
-    }
+
     private fun dispatchTakeImageIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takeImageIntent ->
             takeImageIntent.resolveActivity(requireContext().packageManager)?.also {
@@ -1236,6 +1318,7 @@ class HomeFragment : Fragment() {
             spinner3.isVisible=false
             spinner4.isVisible=false
             statsContainer.isVisible = false
+            statsContainer2.isVisible = false
             videoView.isVisible = false
             videoView2.isVisible = false
             checkboxAudio.isVisible=false

@@ -9,9 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="get image with the highest resolution">
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="finish image capture, compression, sharing and deleting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
@@ -44,16 +43,20 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/matlab/Documents/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1/WambooCam_v1.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DEBUGGABLE_DEVICE": "samsung-sm_g998b-R5CRB314NDL",
+    "DEBUGGABLE_PROCESS": "harmony.valley.wamboocam",
+    "DEBUGGER_ID": "Auto",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHOW_ALL_PROCESSES": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "C:/Users/matlab/Documents/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1/WambooCam_v1.0"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="EcoCam.app.main" />
@@ -179,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685032995547</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="finish image capture, compression, sharing and deleting">
+      <created>1685165145250</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1685165145250</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -202,39 +212,30 @@
     <MESSAGE value="finished video formats spinner" />
     <MESSAGE value="started image camera" />
     <MESSAGE value="get image with the highest resolution" />
-    <option name="LAST_COMMIT_MESSAGE" value="get image with the highest resolution" />
+    <MESSAGE value="finish image capture, compression, sharing and deleting" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish image capture, compression, sharing and deleting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1660</line>
+          <line>1749</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1671</line>
+          <line>1760</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1371</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>715</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1038</line>
+          <line>1034</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1012</line>
+          <line>1008</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -246,6 +247,26 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/services/VideoCompressionService.kt</url>
           <line>281</line>
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
+          <line>1159</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
+          <line>1166</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
+          <line>1200</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
+          <line>1204</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

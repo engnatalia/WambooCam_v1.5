@@ -96,5 +96,6 @@
     <string name="share_compressed_image">Comparte la imagen comprimida</string>
     <string name="compress_image">Comprime la imagen</string>
     <string name="delete_image">Borra imagen no comprimida</string>
+    <string name="pollution_avoided">Reducción de la contaminación, al menos:</string>
 
 </resources>

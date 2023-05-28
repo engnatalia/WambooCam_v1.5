@@ -92,6 +92,7 @@
     <string name="compressed">compressed</string>
     <string name="delete_video">Delete non-compressed video</string>
     <string name="delete_image">Delete non-compressed image</string>
+    <string name="pollution_avoided">Pollution reduction, at least:</string>
     <string name="background">Allow background compression</string>
     <string name="background2">Background compression already enabled!</string>
     <string name="noreduction">Bigger file because original was already compressed or had poor quality!</string>
