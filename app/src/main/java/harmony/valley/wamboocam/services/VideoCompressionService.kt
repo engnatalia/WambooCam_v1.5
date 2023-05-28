@@ -141,7 +141,7 @@ class VideoCompressionService : Service() {
         val outPutSafeUri: String
         val command: String
         var uriPath: Uri? = null
-        val filePrefix = "Compressed"
+        val filePrefix = "Wamboo_video_"
         val fileExtn = "."+selectedformat
         val bm = getSystemService(BATTERY_SERVICE) as BatteryManager
         val initcapacity: Int = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)

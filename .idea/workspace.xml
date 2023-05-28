@@ -9,8 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="obtained and displayed initial and final image sizes, difference % and min pollution avoided">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected resolution calculation when camera is rotated">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/services/VideoCompressionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/services/VideoCompressionService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685246663551</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="corrected resolution calculation when camera is rotated">
+      <created>1685247492394</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1685247492394</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -217,19 +224,20 @@
     <MESSAGE value="get image with the highest resolution" />
     <MESSAGE value="finish image capture, compression, sharing and deleting" />
     <MESSAGE value="obtained and displayed initial and final image sizes, difference % and min pollution avoided" />
-    <option name="LAST_COMMIT_MESSAGE" value="obtained and displayed initial and final image sizes, difference % and min pollution avoided" />
+    <MESSAGE value="corrected resolution calculation when camera is rotated" />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected resolution calculation when camera is rotated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1744</line>
+          <line>1750</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1755</line>
+          <line>1761</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -254,11 +262,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1160</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
           <line>1167</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
@@ -271,6 +274,11 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
           <line>1205</line>
           <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
+          <line>1163</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
