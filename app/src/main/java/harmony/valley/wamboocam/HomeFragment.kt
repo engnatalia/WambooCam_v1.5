@@ -103,6 +103,7 @@ class HomeFragment : Fragment() {
     var unidades = ""
     private lateinit var sharedPreferences: SharedPreferences
     private var imageResolution = ""
+    private var isCameraRotated = false // Initialize the rotation flag
 
     private var selectedVideoUri: Uri? = null
     private val pickVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -1283,6 +1284,7 @@ class HomeFragment : Fragment() {
                     )
                     takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                     takeImageLauncher.launch(takeImageIntent)
+                    isCameraRotated = false // Reset the rotation flag before launching the camera intent
                 }
             }
         }
@@ -1411,8 +1413,13 @@ class HomeFragment : Fragment() {
                 val resolution = getImageResolution(photoUri!!)
                 imageResolution=resolution.toString()
                 if (resolution != null) {
-                    imageWidth = resolution.second.toString()
-                    imageHeight = resolution.first.toString()
+                    if (isCameraRotated){
+                        imageWidth = resolution.second.toString()
+                        imageHeight = resolution.first.toString()
+                    }else{
+                        imageWidth = resolution.first.toString()
+                        imageHeight = resolution.second.toString()
+                    }
                     println("Image resolution: $imageWidth x $imageHeight")
                 } else {
                     println("Failed to get image resolution.")
@@ -1783,7 +1790,10 @@ class HomeFragment : Fragment() {
             put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
             put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         }
-
+        // Set the rotation flag based on the camera rotation
+        val exif = ExifInterface(imagePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+        isCameraRotated = orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_ROTATE_270
         val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, imageDetails)
         photoUri = imageUri
         imageUri?.let { uri ->
