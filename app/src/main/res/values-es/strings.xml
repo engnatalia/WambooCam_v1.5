@@ -97,5 +97,6 @@
     <string name="compress_image">Comprime la imagen</string>
     <string name="delete_image">Borra imagen no comprimida</string>
     <string name="pollution_avoided">Reducción de la contaminación, al menos:</string>
-
+    <string name="title_open_wamboo">Abre Wamboo</string>
+    <string name="open_wamboo">Ups! Algo fuer mal, pero tu vídeo se grabó! Usa Wamboo para comprimirlo.</string>
 </resources>

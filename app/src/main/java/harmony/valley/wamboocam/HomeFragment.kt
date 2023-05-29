@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.PowerManager
@@ -29,6 +28,7 @@ import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
+import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.work.*
 import com.arthenica.ffmpegkit.FFmpegKit
@@ -38,16 +38,15 @@ import com.arthenica.ffmpegkit.MediaInformationSession
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import kotlinx.coroutines.*
 import harmony.valley.wamboocam.databinding.FragmentHomeBinding
 import harmony.valley.wamboocam.workers.ForegroundWorker
 import harmony.valley.wamboocam.workers.VideoCompressionWorker
+import kotlinx.coroutines.*
+import java.io.*
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
-import kotlin.math.round
 import java.util.*
-import androidx.exifinterface.media.ExifInterface
-import java.io.*
+import kotlin.math.round
 
 
 private const val REQUEST_PICK_VIDEO = 1
@@ -192,6 +191,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
     private fun calculateQuality(){
         binding.quality.visibility= View.GONE
         binding.qualityDescription.visibility= View.GONE
@@ -208,7 +208,7 @@ class HomeFragment : Fragment() {
         val hola=FFmpegKit.execute(command2)
         binding.quality.visibility = View.VISIBLE
         val indexSsim = hola.logs.size
-        val ssimLine = hola.logs.get(indexSsim-2)
+        val ssimLine = hola.logs[indexSsim-2]
         val ssim=ssimLine.message.substringAfter("All:").substringBefore("(")
         val quality: Double
         val msg1: String
@@ -453,89 +453,10 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun checkWritingPermission() {
-        val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    Log.i("Permission: ", "Granted")
-                } else {
-                    Log.i("Permission: ", "Denied")
-                }
-            }
-
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED -> {
 
 
-                requestPermissionLauncher.launch(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                )
-
-            }
-        }
-    }
-
-    private fun checkImagesPermission() {
-        val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    Log.i("Permission: ", "Granted")
-                } else {
-                    Log.i("Permission: ", "Denied")
-                }
-            }
-
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_MEDIA_IMAGES
-            ) != PackageManager.PERMISSION_GRANTED -> {
 
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    requestPermissionLauncher.launch(
-                        Manifest.permission.READ_MEDIA_IMAGES,
-                    )
-                }
-
-            }
-        }
-    }
-    private fun checkVideosPermission() {
-        val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    Log.i("Permission: ", "Granted")
-                } else {
-                    Log.i("Permission: ", "Denied")
-                }
-            }
-
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_MEDIA_VIDEO
-            ) != PackageManager.PERMISSION_GRANTED -> {
-
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    requestPermissionLauncher.launch(
-                        Manifest.permission.READ_MEDIA_VIDEO,
-                    )
-                }
-
-            }
-        }
-    }
     private fun checkCameraPermission() {
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -788,11 +709,6 @@ class HomeFragment : Fragment() {
         when (videoUrl) {
             null -> {
                 binding.videoView.visibility = View.GONE
-                Toast.makeText(
-                    context,
-                    Html.fromHtml("<font color='red' ><b>" + getString(R.string.capture_video) + "</b></font>"),
-                    Toast.LENGTH_SHORT
-                ).show()
 
             }
         }// Setting media controller to the video . So the user can pause and play the video . They will appear when user tap on video
@@ -809,10 +725,11 @@ class HomeFragment : Fragment() {
                 spinner5.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
                         parent: AdapterView<*>,
-                        view: View,
+                        view: View?,
                         position: Int,
                         id: Long
                     ) {
+                        if (view!=null){
                         selectedformat = formatsValues[position]
                         videoformat = formatsSpinner[position]
 
@@ -835,6 +752,7 @@ class HomeFragment : Fragment() {
 
                     }
 
+                }
                     override fun onNothingSelected(parent: AdapterView<*>) {
                         // Code to perform some action when nothing is selected
                     }
@@ -846,10 +764,10 @@ class HomeFragment : Fragment() {
                 spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
                         parent: AdapterView<*>,
-                        view: View,
+                        view: View?,
                         position: Int,
                         id: Long
-                    ) {
+                    ) { if (view!=null){
                         selectedtype = typesSpinner[position]
                         val spinner2 = addSpinnerSpeed()
                         val spinner4 = addSpinnerCodec()
@@ -934,6 +852,7 @@ class HomeFragment : Fragment() {
 
                     }
 
+                }
                     override fun onNothingSelected(parent: AdapterView<*>) {
                         // Code to perform some action when nothing is selected
                     }
@@ -943,7 +862,6 @@ class HomeFragment : Fragment() {
 
 
                 //  binding.spinner.visibility=View.VISIBLE
-
 
 
 

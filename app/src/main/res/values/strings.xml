@@ -96,4 +96,6 @@
     <string name="background">Allow background compression</string>
     <string name="background2">Background compression already enabled!</string>
     <string name="noreduction">Bigger file because original was already compressed or had poor quality!</string>
+    <string name="title_open_wamboo">Open Wamboo</string>
+    <string name="open_wamboo">Oops! Something went wrong. However, your video was recorded and you can compress it using Wamboo.</string>
 </resources>

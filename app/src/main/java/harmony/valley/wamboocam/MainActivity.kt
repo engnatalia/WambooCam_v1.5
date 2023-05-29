@@ -5,10 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import dagger.hilt.android.AndroidEntryPoint											
+import dagger.hilt.android.AndroidEntryPoint
 import harmony.valley.wamboocam.databinding.ActivityMainBinding
 
-@AndroidEntryPoint				  
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val hometab = getString(R.string.title_home)
         val infotab = getString(R.string.title_information)
-		val historytab = getString(R.string.title_history)
+        val historytab = getString(R.string.title_history)
         val tabTitles = arrayOf(hometab, infotab, historytab)
         setContentView(binding.root)
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         /// set adapter to viewpager
         binding.viewPager.adapter = adapter
-		//binding.viewPager.isUserInputEnabled = false
+        //binding.viewPager.isUserInputEnabled = false
 
         /* attach viewpager with tabLayout to update its label when page change
         *  assign tab labels
@@ -62,9 +62,5 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setCustomView(R.layout.actionbar_title)
     }
 
-	/*override fun onStop() {
-        super.onStop()
 
-
-    }*/
 }
