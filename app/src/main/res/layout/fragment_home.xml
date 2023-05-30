@@ -47,6 +47,7 @@
                 android:text="@string/capture_image"
                 android:textColor="@color/white"
                 android:textFontWeight="700" />
+
         </LinearLayout>
 
             <RadioButton
@@ -57,7 +58,38 @@
                 android:checked="false"
                 android:fontFamily="@font/bauhausitalic"
                 android:text="@string/background" />
-
+            <TextView
+                android:id="@+id/instructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/instructions"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/instructions2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:autoLink="web"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/instructions3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/instructions3"
+                android:autoLink="web|email"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
             <VideoView
                 android:id="@+id/videoView"
                 android:layout_width="wrap_content"

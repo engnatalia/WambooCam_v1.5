@@ -11,13 +11,18 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.os.PowerManager
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.provider.Settings
 import android.text.Html
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -27,6 +32,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
@@ -91,7 +97,7 @@ class HomeFragment : Fragment() {
     private var videoformat = "mp4"
     private lateinit var progressDialog: AlertDialog
     private var showViews = true
-    private lateinit var currentPhotoPath: String
+    private var currentPhotoPath: String = ""
     var  init75 = 0.0
     var init40= 0.0
     var init70= 0.0
@@ -127,6 +133,10 @@ class HomeFragment : Fragment() {
                 } else {
                     val msg1 = getString(R.string.notification_message_failure)
                     Toast.makeText(context, msg1, Toast.LENGTH_SHORT).show()
+                    val urlPlay="https://play.google.com/store/apps/details?id=wamboo.example.videocompressor"
+                    Toast.makeText(context, getString(R.string.open_wamboo), Toast.LENGTH_SHORT).show()
+                    val intent55 = Intent(Intent.ACTION_VIEW, Uri.parse(urlPlay))
+                    requireContext().startActivity(intent55)
                 }
                 if (compressedFilePath != intent.getStringExtra(URI_PATH)){
 
@@ -187,6 +197,10 @@ class HomeFragment : Fragment() {
                 } else {
                     val msg2 = getString(R.string.notification_message_failure)
                     Toast.makeText(context, msg2, Toast.LENGTH_SHORT).show()
+                    val urlPlay="https://play.google.com/store/apps/details?id=wamboo.example.videocompressor"
+                    Toast.makeText(context, getString(R.string.open_wamboo), Toast.LENGTH_SHORT).show()
+                    val intent55 = Intent(Intent.ACTION_VIEW, Uri.parse(urlPlay))
+                    requireContext().startActivity(intent55)
                 }
             }
         }
@@ -269,6 +283,7 @@ class HomeFragment : Fragment() {
                 binding.videoView2.start()}
             else -> {
                 binding.videoView.visibility = View.VISIBLE
+                hideInitInfo()
                 binding.videoView2.visibility = View.VISIBLE
                 binding.deleteVideo.visibility = View.VISIBLE
                 binding.videoView.start()
@@ -379,6 +394,8 @@ class HomeFragment : Fragment() {
             intent.data = Uri.parse("https://www.instagram.com/harmonyvalley_official/")
             startActivity(intent)
         }
+        initInfo()
+
         return binding.root
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -420,6 +437,7 @@ class HomeFragment : Fragment() {
         //checkVideosPermission()
         //checkWritingPermission()
         initUI()
+
         videoView = binding.root.findViewById(R.id.videoView)
         videoView2 = binding.root.findViewById(R.id.videoView2)
         imageView = binding.root.findViewById(R.id.imageView)
@@ -435,18 +453,18 @@ class HomeFragment : Fragment() {
 
         if (!areNotificationsEnabled) {
 
-                // Create a channel for your notifications
-                val channel = NotificationChannel(
-                    "channel_id", "My Channel", NotificationManager.IMPORTANCE_DEFAULT
-                )
-                val notificationManager2 =
-                    requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager2.createNotificationChannel(channel)
+            // Create a channel for your notifications
+            val channel = NotificationChannel(
+                "channel_id", "My Channel", NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val notificationManager2 =
+                requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager2.createNotificationChannel(channel)
 
-                // Ask the user to allow your app to show notifications
-                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
-                startActivity(intent)
+            // Ask the user to allow your app to show notifications
+            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
+            startActivity(intent)
 
 
         }
@@ -571,7 +589,7 @@ class HomeFragment : Fragment() {
         } catch (e: Exception) {
             Toast.makeText(
                 ctx,
-                "Battery Setting not found in this device please manually go to setting and enable background task",
+                getString(R.string.no_bat_set),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -607,7 +625,7 @@ class HomeFragment : Fragment() {
         formatsSpinner =
             arrayOf(getString(R.string.select_format), "mp4", "avi", "mov", "mkv", "3gp")
         formatsValues = arrayOf("mp4", "mp4", "avi", "mov", "mkv", "3gp")
-        val arrayAdapter2 = ArrayAdapter(requireContext(), R.layout.spinner_row, formatsSpinner)
+        val arrayAdapter2 = ArrayAdapter(requireContext(), R.layout.spinner_list, formatsSpinner)
         spinner5.adapter = arrayAdapter2
         captureVideo.setOnClickListener {
 
@@ -641,9 +659,11 @@ class HomeFragment : Fragment() {
                     requireContext(),
                     Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED -> {
+
                     dispatchTakeImageIntent()
                 }
             }
+
             when (photoUri) {
                 null -> {
                     binding.imageView.visibility = View.GONE
@@ -663,14 +683,21 @@ class HomeFragment : Fragment() {
                             compressImage.isVisible = false
 
                             saveImageWithDifferentResolution(currentPhotoPath,imageWidth.toInt(),imageHeight.toInt())
-
+                            imageView2.isVisible = true
+                            imageView.isVisible = true
+                            hideInitInfo()
+                            spinner6.isVisible = false
+                            binding.shareImage.isVisible = true
+                            binding.reset.isVisible = true
+                            binding.compressImage.isVisible = false
+                            binding.deleteImage.isVisible = true
 
                         } else {
 
                             // If picked video is null or video is not picked
                             binding.imageView.visibility = View.GONE
 
-                            binding.videoView2.visibility = View.GONE
+                            binding.imageView2.visibility = View.GONE
                             Toast.makeText(
                                 context,
                                 Html.fromHtml("<font color='red' ><b>" + getString(R.string.capture_image) + "</b></font>"),
@@ -712,156 +739,163 @@ class HomeFragment : Fragment() {
 
             }
         }// Setting media controller to the video . So the user can pause and play the video . They will appear when user tap on video
-                videoView.setMediaController(MediaController(requireActivity()))
-                videoView2.setMediaController(MediaController(requireActivity()))
-                checkboxAudio.setOnCheckedChangeListener { checkboxAudio, _ ->
-                    val checked: Boolean = checkboxAudio.isChecked
-                    if (checked) {
-                        audio = "-an"
-                    } else {
-                        audio = "-c:a copy"
+        videoView.setMediaController(MediaController(requireActivity()))
+        videoView2.setMediaController(MediaController(requireActivity()))
+        checkboxAudio.setOnCheckedChangeListener { checkboxAudio, _ ->
+            val checked: Boolean = checkboxAudio.isChecked
+            if (checked) {
+                audio = "-an"
+            } else {
+                audio = "-c:a copy"
+            }
+        }
+        spinner5.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (view!=null){
+                    selectedformat = formatsValues[position]
+                    videoformat = formatsSpinner[position]
+                    if (videoformat == "3gp" && videoCodec=="libx265")  {
+                        videoCodec = "libx264"
+                        Toast.makeText(
+                            requireActivity(),
+                            getString(R.string.h265_3gp),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                }
-                spinner5.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        if (view!=null){
-                        selectedformat = formatsValues[position]
-                        videoformat = formatsSpinner[position]
-
-                        when (position) {
-                            0 -> {
-                                Toast.makeText(
-                                    requireActivity(),
-                                    getString(R.string.no_selected_format),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            else -> {
-                                Toast.makeText(
-                                    requireActivity(),
-                                    getString(R.string.selected_format) + " " + videoformat,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                    when (position) {
+                        0 -> {
+                            Toast.makeText(
+                                requireActivity(),
+                                getString(R.string.no_selected_format),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-
-                    }
-
-                }
-                    override fun onNothingSelected(parent: AdapterView<*>) {
-                        // Code to perform some action when nothing is selected
-                    }
-
-                }
-
-                /*  with(spinner)
-          {setSelection(0, false)}*/
-                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) { if (view!=null){
-                        selectedtype = typesSpinner[position]
-                        val spinner2 = addSpinnerSpeed()
-                        val spinner4 = addSpinnerCodec()
-                        val spinner3 = addSpinnerResolution()
-                        when (selectedtype) {
-                            getString(R.string.good) -> {
-
-                                hideSpinner(spinner2)
-                                hideSpinner(spinner3)
-                                hideSpinner(spinner4)
-                                binding.dataTV.visibility = View.VISIBLE
-                                binding.dataTV2.visibility = View.VISIBLE
-                                binding.dataTV3.visibility = View.VISIBLE
-                                binding.dataTV.text = getString(R.string.estimated_size)
-                                binding.dataTV2.text = Html.fromHtml(
-                                    "<b>" + init40.toBigDecimal().setScale(2, RoundingMode.UP)
-                                        .toDouble() + " $unidades" + "</b>"
-                                )
-                                binding.dataTV3.text = "40% " + getString(R.string.compression)
-                            }
-                            getString(R.string.best) -> {
-
-                                hideSpinner(spinner2)
-                                hideSpinner(spinner3)
-                                hideSpinner(spinner4)
-                                binding.dataTV.visibility = View.VISIBLE
-                                binding.dataTV2.visibility = View.VISIBLE
-                                binding.dataTV3.visibility = View.VISIBLE
-                                binding.dataTV.text = getString(R.string.estimated_size)
-                                binding.dataTV2.text = Html.fromHtml(
-                                    "<b>" + init70.toBigDecimal().setScale(2, RoundingMode.UP)
-                                        .toDouble() + " $unidades" + "</b>"
-                                )
-                                binding.dataTV3.text = "70% " + getString(R.string.compression)
-                            }
-                            getString(R.string.ultrafast) -> {
-
-                                hideSpinner(spinner2)
-                                hideSpinner(spinner3)
-                                hideSpinner(spinner4)
-                                binding.dataTV.visibility = View.VISIBLE
-                                binding.dataTV2.visibility = View.VISIBLE
-                                binding.dataTV3.visibility = View.VISIBLE
-                                binding.dataTV.text = getString(R.string.estimated_size)
-                                binding.dataTV2.text = Html.fromHtml(
-                                    "<b>" + init75.toBigDecimal().setScale(2, RoundingMode.UP)
-                                        .toDouble() + " $unidades" + "</b>"
-                                )
-                                binding.dataTV3.text = "75% " + getString(R.string.compression)
-                            }
-
-                            getString(R.string.custom_h) -> {
-                                dataTV.isVisible = false
-                                dataTV2.isVisible = false
-                                dataTV3.isVisible = false
-
-                            }
-                            getString(R.string.custom_l) -> {
-                                dataTV.isVisible = false
-                                dataTV2.isVisible = false
-                                dataTV3.isVisible = false
-
-
-                            }
-                            else -> {
-
-                                hideSpinner(spinner2)
-                                hideSpinner(spinner3)
-                                hideSpinner(spinner4)
-                                binding.dataTV.visibility = View.VISIBLE
-                                binding.dataTV2.visibility = View.VISIBLE
-                                binding.dataTV3.visibility = View.VISIBLE
-                                binding.dataTV.text = getString(R.string.estimated_size)
-                                binding.dataTV2.text = Html.fromHtml(
-                                    "<b>" + init75.toBigDecimal().setScale(2, RoundingMode.UP)
-                                        .toDouble() + " $unidades" + "</b>"
-                                )
-                                binding.dataTV3.text = "75% " + getString(R.string.compression)
-                            }
+                        else -> {
+                            Toast.makeText(
+                                requireActivity(),
+                                getString(R.string.selected_format) + " " + videoformat,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-
-
                     }
 
                 }
-                    override fun onNothingSelected(parent: AdapterView<*>) {
-                        // Code to perform some action when nothing is selected
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+
+        }
+
+        /*  with(spinner)
+  {setSelection(0, false)}*/
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) { if (view!=null){
+                selectedtype = typesSpinner[position]
+                val spinner2 = addSpinnerSpeed()
+                val spinner4 = addSpinnerCodec()
+                val spinner3 = addSpinnerResolution()
+                when (selectedtype) {
+                    getString(R.string.good) -> {
+
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
+                        binding.dataTV.visibility = View.VISIBLE
+                        binding.dataTV2.visibility = View.VISIBLE
+                        binding.dataTV3.visibility = View.VISIBLE
+                        binding.dataTV.text = getString(R.string.estimated_size)
+                        binding.dataTV2.text = Html.fromHtml(
+                            "<b>" + init40.toBigDecimal().setScale(2, RoundingMode.UP)
+                                .toDouble() + " $unidades" + "</b>"
+                        )
+                        binding.dataTV3.text = "40% " + getString(R.string.compression)
+                    }
+                    getString(R.string.best) -> {
+
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
+                        binding.dataTV.visibility = View.VISIBLE
+                        binding.dataTV2.visibility = View.VISIBLE
+                        binding.dataTV3.visibility = View.VISIBLE
+                        binding.dataTV.text = getString(R.string.estimated_size)
+                        binding.dataTV2.text = Html.fromHtml(
+                            "<b>" + init70.toBigDecimal().setScale(2, RoundingMode.UP)
+                                .toDouble() + " $unidades" + "</b>"
+                        )
+                        binding.dataTV3.text = "70% " + getString(R.string.compression)
+                    }
+                    getString(R.string.ultrafast) -> {
+
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
+                        binding.dataTV.visibility = View.VISIBLE
+                        binding.dataTV2.visibility = View.VISIBLE
+                        binding.dataTV3.visibility = View.VISIBLE
+                        binding.dataTV.text = getString(R.string.estimated_size)
+                        binding.dataTV2.text = Html.fromHtml(
+                            "<b>" + init75.toBigDecimal().setScale(2, RoundingMode.UP)
+                                .toDouble() + " $unidades" + "</b>"
+                        )
+                        binding.dataTV3.text = "75% " + getString(R.string.compression)
                     }
 
+                    getString(R.string.custom_h) -> {
+                        dataTV.isVisible = false
+                        dataTV2.isVisible = false
+                        dataTV3.isVisible = false
+
+                    }
+                    getString(R.string.custom_l) -> {
+                        dataTV.isVisible = false
+                        dataTV2.isVisible = false
+                        dataTV3.isVisible = false
+
+
+                    }
+                    else -> {
+
+                        hideSpinner(spinner2)
+                        hideSpinner(spinner3)
+                        hideSpinner(spinner4)
+                        binding.dataTV.visibility = View.VISIBLE
+                        binding.dataTV2.visibility = View.VISIBLE
+                        binding.dataTV3.visibility = View.VISIBLE
+                        binding.dataTV.text = getString(R.string.estimated_size)
+                        binding.dataTV2.text = Html.fromHtml(
+                            "<b>" + init75.toBigDecimal().setScale(2, RoundingMode.UP)
+                                .toDouble() + " $unidades" + "</b>"
+                        )
+                        binding.dataTV3.text = "75% " + getString(R.string.compression)
+                    }
                 }
-                // Add Spinner to LinearLayout
 
 
-                //  binding.spinner.visibility=View.VISIBLE
+            }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+
+        }
+        // Add Spinner to LinearLayout
+
+
+        //  binding.spinner.visibility=View.VISIBLE
 
 
 
@@ -1040,6 +1074,7 @@ class HomeFragment : Fragment() {
             imageView2.setImageURI(imageUri)
             imageView2.isVisible = true
             imageView.isVisible = true
+            hideInitInfo()
             spinner6?.isVisible = false
             binding.shareImage.isVisible=true
             binding.reset.isVisible=true
@@ -1066,17 +1101,25 @@ class HomeFragment : Fragment() {
                     initImageSizeNoUnits.toInt(),
                     finalImageSizeNoUnits.toInt()
                 ).toString()
-
-                binding.statsContainer2.visibility = View.VISIBLE
-                binding.initImageSize.text = initImageSize
-                binding.finalImageSize.text = finalImageSize
-                binding.minPollutionAvoided.text = buildString {
-                    append(reductionPercentage.toBigDecimal().setScale(2,
-                        RoundingMode.UP))
-                    append("%")
-                    append("\n")
-                    append(getString(R.string.congrats))
+                if (!finalImageSize.equals("0.00 KB", ignoreCase = true)) {
+                    // Code for non-zero image size
+                    binding.statsContainer2.visibility = View.VISIBLE
+                    binding.initImageSize.text = initImageSize
+                    binding.finalImageSize.text = finalImageSize
+                    binding.minPollutionAvoided.text = buildString {
+                        append(reductionPercentage.toBigDecimal().setScale(2, RoundingMode.UP))
+                        append("%")
+                        append("\n")
+                        append(getString(R.string.congrats))
+                    }
+                } else {
+                    // Code for zero image size
+                    binding.statsContainer2.visibility = View.VISIBLE
+                    binding.initImageSize.text = initImageSize
+                    binding.finalImageSize.text = getString(R.string.size_issue)
+                    binding.minPollutionAvoided.text ="90%"
                 }
+
             }
 
 
@@ -1190,7 +1233,7 @@ class HomeFragment : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: throw IOException("Failed to get external storage directory")
+        val storageDir: File = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: throw IOException(getString(R.string.external_directory))
         return File.createTempFile(
             "JPEG_${timeStamp}_",
             ".jpg",
@@ -1200,12 +1243,51 @@ class HomeFragment : Fragment() {
             currentPhotoPath = absolutePath
         }
     }
+    private fun initInfo() {
+        with(binding) {
+            instructions.isVisible = true
+            instructions2.isVisible = true
+
+            // Add the clickable link in the TextView
+            val linkTextView = binding.root.findViewById<TextView>(R.id.instructions2)
+            val text = getString(R.string.instructions2)
+            val spannableString = SpannableString(text)
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    val url =
+                        "https://play.google.com/store/apps/details?id=wamboo.example.videocompressor"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                }
+            }
+            spannableString.setSpan(
+                clickableSpan,
+                0,
+                text.length,
+                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            linkTextView.text = spannableString
+            linkTextView.movementMethod = LinkMovementMethod.getInstance()
+            instructions3.isVisible = true
+        }
+
+    }
+
+    private fun hideInitInfo() {
+        with(binding) {
+            instructions.isVisible = false
+            instructions2.isVisible = false
+            instructions3.isVisible = false
+            // Add the clickable link in the TextView
+
+    } }
     private fun resetViews() {
         with(binding) {
 
             clearPref()
             captureVideo.isVisible = true
             captureImage.isVisible = true
+            initInfo()
             spinner.isVisible=false
             spinner6.isVisible=false
             imageView2.isVisible = false
@@ -1538,6 +1620,14 @@ class HomeFragment : Fragment() {
                 id: Long
             ) { videoCodec =codecValues[position]
                 showCodec = codecSpinner[position]
+                if (videoformat == "3gp" && videoCodec=="libx265")  {
+                    videoCodec = "libx264"
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.h265_3gp),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 when (position) {
                     0->{Toast.makeText(
                         requireActivity(),
@@ -1682,6 +1772,7 @@ class HomeFragment : Fragment() {
 
             imageView.setImageURI(imageUri)
             imageView.isVisible = true
+            hideInitInfo()
             spinner6 = addSpinnerImageResolution()
             spinner6?.isVisible = true
             binding.compressImage.isVisible = true
@@ -1692,11 +1783,39 @@ class HomeFragment : Fragment() {
 
 
 
-    private var takeImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // Image captured successfully
 
+    private var takeImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+
+        if (result.resultCode == Activity.RESULT_OK) {
+
+
+            // Image captured successfully
+       if (currentPhotoPath.isNotEmpty()){
             saveImageToGallery(currentPhotoPath)
+           resetViews()
+           binding.shareVideo.visibility = View.GONE
+           binding.deleteVideo.visibility = View.GONE
+           binding.imageView.visibility = View.VISIBLE
+           hideInitInfo()
+           imageView.setImageURI(currentPhotoPath.toUri())
+           imageView.isVisible = true
+           hideInitInfo()
+           spinner6 = addSpinnerImageResolution()
+           spinner6?.isVisible = true
+           binding.compressImage.isVisible = true
+           binding.shareImage.isVisible = false
+       }else
+       {
+
+           AlertDialog.Builder(requireActivity()).apply {
+               val msg2 = getString(R.string.rotation_issue)
+               setMessage(msg2).setPositiveButton(
+                   getString(R.string.ok)
+               ) { _, _ ->  }
+           }.create().show()
+       }
+
         }
     }
 
@@ -1771,7 +1890,7 @@ If there is an error in the process, an error message is displayed to the user v
 
                         }
                         binding.videoView.visibility=View.VISIBLE
-
+                        hideInitInfo()
                         // now set the video uri in the VideoView
                         binding.videoView.setVideoURI(uri)
 

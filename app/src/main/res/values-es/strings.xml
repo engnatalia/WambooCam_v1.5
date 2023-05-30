@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wamboo Cam</string>
-    <string name="intro">El vídeo es el tipo de datos que más consumimos y el más complicado de procesar en dispositivos electrónicos, lo que genera toneladas de emisiones de CO2 cada año.</string>
-    <string name="body">"Al usar Wamboo, puedes reducir el tamaño de tus videos hasta en un 90%, para ahorrar memoria no solo en su teléfono, sino también en los servidores de redes sociales (grandes PC que almacenan información digital) si los compartes. De esta manera, con videos más pequeños, reducirás tu huella de carbono. Además, Wamboo es eficiente porque minimiza el uso de la batería del teléfono mientras comprime los videos y muestra la contaminación asociada cuando se gasta algo de batería. En las apps de compresión tradicionales, los recursos del teléfono no se usan de manera eficiente y el gasto de la batería se maximiza, lo que genera contaminación, ya que el teléfono debe cargarse con más frecuencia, consumiendo más energía eléctrica (con los costes asociados de electricidad para los usuarios). "</string>
-    <string name="body2">De esta forma, también ahorrarás dinero en almacenamiento (discos duros, en la nube...) y en electricidad!</string>
-    <string name="end">"Te animamos a ti y a todos los usuarios de vídeo a comprimirlos con Wamboo antes de compartirlos, especialmente si crees que tu vídeo puede compartirse varias veces o volverse viral: evitaremos toneladas de emisiones de CO2 al año! "</string>
+    <string name="intro">El vídeo, ese cautivador formato de contenido que consumimos sin cesar, es también uno de los mayores desafíos en términos de procesamiento en nuestros dispositivos electrónicos. Pero, ¿sabías que su impacto en el medio ambiente es igualmente significativo, generando toneladas de emisiones de CO2 cada año?</string>
+    <string name="body">Sin embargo, ¡aquí es donde entra en juego Wamboo Cam, la solución revolucionaria que transformará por completo tu experiencia multimedia! Con esta increíble herramienta, podrás crear vídeos y capturar momentos inolvidables en fotos, ¡todo mientras reduces su tamaño en hasta un asombroso 90%! ¿Te imaginas? No solo ahorrarás memoria en tu teléfono, sino que también al compartirlos en las redes sociales, estarás aliviando la carga en sus gigantescos servidores (esos colosales ordenadores que almacenan información digital).</string>
+    <string name="body2">¿Qué significa esto? Pues, con archivos más pequeños, estarás dando un valioso paso hacia la reducción de tu huella de carbono. ¡Y eso no es todo! Wamboo Cam es tan eficiente que minimiza el consumo de batería de tu teléfono mientras comprime tus fotos y vídeos. ¿Sabes qué significa eso? Menos contaminación asociada al uso de tu batería. ¿No es maravilloso? En cambio, las aplicaciones de compresión tradicionales suelen ser derrochadoras, agotando tu batería y generando contaminación innecesaria. ¡Imagina tener que cargar tu teléfono con más frecuencia y gastar más energía eléctrica! Con Wamboo Cam, no tendrás que preocuparte por eso.</string>
+    <string name="body3">Pero eso no es todo. ¿Sabías que las cámaras tradicionales no comprimen los archivos? Esto significa que ocupan demasiado espacio en tu dispositivo. Pero con Wamboo Cam, todo eso cambiará. No solo ahorrarás dinero en almacenamiento (adiós a los costosos discos duros o servicios de almacenamiento en la nube), ¡sino que también ahorrarás en electricidad! Sí, has oído bien. ¡Podrás disfrutar de tus vídeos y fotos sin preocuparte por los gastos innecesarios! Así que, queridos amigos, os animamos fervientemente a todos, a ti y a todos los amantes del contenido multimedia, a dar un paso adelante y uniros al emocionante mundo de Wamboo Cam. Especialmente si crees que tus vídeos podrían convertirse en virales o compartirse una y otra vez. ¡Imagina cuántas toneladas de emisiones de CO2 podríamos evitar al año!</string>
+    <string name="body5">Descárga el eco compresor Wamboo de manera totalmente gratuita aquí.</string>
+    <string name="body4">Y si ya tienes una montaña de vídeos esperando para ser comprimidos, no temas, porque Harmony Valley tiene una aplicación hermana diseñada especialmente para eso: ¡Wamboo, el eco compresor de vídeo! </string>
+    <string name="end">Prepárate para un viaje hacia la eficiencia, el ahorro y la protección de nuestro preciado planeta. Con Wamboo Cam y Wamboo, ¡tus momentos más vibrantes cobrarán vida mientras cuidas del medio ambiente! ¿A qué estás esperando? ¡Utiliza Wamboo Cam y únete a la revolución multimedia hoy mismo!</string>
     <string name="contact">Contáctanos: contact.harmonyvalley@gmail.com</string>
     <string name="capture_video">Grabar vídeo</string>
     <string name="ultrafast">Ultra-rápido</string>
@@ -90,13 +93,20 @@
     <string name="noreduction">Mayor tamaño que original porque ya fue comprimido o la calidad era muy baja!</string>
     <string name="contact1">¿Comentarios o preguntas? ¿Qué características te gustaría que tuviera la siguiente versión de Wamboo?</string>
     <string name="selected_format">Formato seleccionado:</string>
-    <string name="select_format">Seleccionaformato</string>
+    <string name="select_format">Selecciona formato</string>
     <string name="no_selected_format">Formato no seleccionado</string>
     <string name="capture_image">Hacer foto</string>
     <string name="share_compressed_image">Comparte la imagen comprimida</string>
     <string name="compress_image">Comprime la imagen</string>
     <string name="delete_image">Borra imagen no comprimida</string>
     <string name="pollution_avoided">Reducción de la contaminación, al menos:</string>
-    <string name="title_open_wamboo">Abre Wamboo</string>
+    <string name="no_bat_set">Configuración de la batería mo encontrada. Por favor, habilita manualmente la función de segundo plano en la configuración de tu teléfono</string>
     <string name="open_wamboo">Ups! Algo fuer mal, pero tu vídeo se grabó! Usa Wamboo para comprimirlo.</string>
+    <string name="h265_3gp">No es posible comprimir 3gp con H.265, cambiado a H.264</string>
+    <string name="external_directory">No se pudo obtener el directorio de almacenamiento externo</string>
+    <string name="rotation_issue">Ups! Si has hecho una foto horizontal, prueba de nueva y, antes de pulsar \"Aceptar\", pon tu móvil en vertical de nuevo.</string>
+    <string name="size_issue">No se pudo calcular, pero comprueba los metadatos de la imagen en tu galería! Prometemos que el tamaño de la foto comprimida se habrá reducido mucho!</string>
+    <string name="instructions">Para capturar un video o tomar una foto en orientación horizontal, simplemente haz clic en uno de los botones superiores, sostén la cámara en posición horizontal y, antes de confirmar la captura, gira la cámara de nuevo a posición vertical para evitar que se reinicie el diseño (aunque esto no siempre ocurre). ¡Disfruta capturando tus momentos!</string>
+    <string name="instructions2">De todas formas, si eso sucede, es probable que tu archivo esté guardado y puedes comprimir tus videos utilizando el increíble Wamboo Eco Compresor. ¡Descárgalo completamente gratis aquí!</string>
+    <string name="instructions3">Preguntas? Contáctanos: contact.harmonyvalley@gmail.com</string>
 </resources>

@@ -29,16 +29,16 @@ import java.math.RoundingMode
 import kotlin.math.abs
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject								 
-@AndroidEntryPoint			  
+import javax.inject.Inject
+@AndroidEntryPoint
 class VideoCompressionService : Service() {
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var builder2: NotificationCompat.Builder
     private var wakeLock: PowerManager.WakeLock? = null
     @Inject
-    lateinit var compressRepo: CompressRepository		   
-
+    lateinit var compressRepo: CompressRepository
+    private var libx="libx265"
     companion object {
         const val NOTIFICATION_ID = 1
         const val CHANNEL_ID = "VideoCompressionChannel"
@@ -217,20 +217,26 @@ class VideoCompressionService : Service() {
                 } -movflags +faststart -c:v libx264 -crf 40 $audio -preset ultrafast $outPutSafeUri"
             }
             getString(R.string.good) -> {
+                if (selectedformat=="3gp")
+                { libx="libx264"}
+                else{ libx="libx265"}
                 command = "-y -i ${
                     FFmpegKitConfig.getSafParameterForRead(
                         applicationContext,
                         videoUri
                     )
-                } -movflags +faststart -c:v libx265 -crf 25 $audio -preset ultrafast $outPutSafeUri"
+                } -movflags +faststart -c:v $libx -crf 25 $audio -preset ultrafast $outPutSafeUri"
             }
             getString(R.string.best) -> {
+                if (selectedformat=="3gp")
+                { libx="libx264"}
+                else{ libx="libx265"}
                 command = "-y -i ${
                     FFmpegKitConfig.getSafParameterForRead(
                         applicationContext,
                         videoUri
                     )
-                } -movflags +faststart -c:v libx265 -crf 30 $audio -preset ultrafast $outPutSafeUri"
+                } -movflags +faststart -c:v $libx -crf 30 $audio -preset ultrafast $outPutSafeUri"
             }
             getString(R.string.custom_h) -> {
                 command = "-y -i ${
@@ -316,7 +322,7 @@ class VideoCompressionService : Service() {
                     putString(HomeFragment.CO2, co2.toString()).apply()
                 }
 
-				CoroutineScope(Dispatchers.IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val millisecond = System.currentTimeMillis()
                     val date = SimpleDateFormat("dd/MM/yyyy").format(Date(millisecond))
                     compressRepo.insert(
