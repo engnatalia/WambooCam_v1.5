@@ -109,4 +109,5 @@
     <string name="instructions">Para capturar un video o tomar una foto en orientación horizontal, simplemente haz clic en uno de los botones superiores, sostén la cámara en posición horizontal y, antes de confirmar la captura, gira la cámara de nuevo a posición vertical para evitar que se reinicie el diseño (aunque esto no siempre ocurre). ¡Disfruta capturando tus momentos!</string>
     <string name="instructions2">De todas formas, si eso sucede, es probable que tu archivo esté guardado y puedes comprimir tus videos utilizando el increíble Wamboo Eco Compresor. ¡Descárgalo completamente gratis aquí!</string>
     <string name="instructions3">Preguntas? Contáctanos: contact.harmonyvalley@gmail.com</string>
+    <string name="h265_avi">No es posible comprimir avi con H.265, cambiado a H.264</string>
 </resources>

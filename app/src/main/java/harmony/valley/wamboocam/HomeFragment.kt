@@ -299,6 +299,9 @@ class HomeFragment : Fragment() {
         binding.reset.visibility = View.VISIBLE
         binding.shareVideo.visibility = View.VISIBLE
         binding.statsContainer.visibility = View.VISIBLE
+        binding.instructions.isVisible = false
+        binding.instructions2.isVisible = false
+        binding.instructions3.isVisible = false
         binding.statsContainer2.visibility = View.GONE
         binding.initialSizeTV.text = initialSize
         binding.compressedSizeTV.text = compressedSize
@@ -767,6 +770,15 @@ class HomeFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+                    if (videoformat == "avi" && videoCodec=="libx265")  {
+                        videoCodec = "libx264"
+                        Toast.makeText(
+                            requireActivity(),
+                            getString(R.string.h265_avi),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
                     when (position) {
                         0 -> {
                             Toast.makeText(
@@ -1104,6 +1116,9 @@ class HomeFragment : Fragment() {
                 if (!finalImageSize.equals("0.00 KB", ignoreCase = true)) {
                     // Code for non-zero image size
                     binding.statsContainer2.visibility = View.VISIBLE
+                    binding.instructions.isVisible = false
+                    binding.instructions2.isVisible = false
+                    binding.instructions3.isVisible = false
                     binding.initImageSize.text = initImageSize
                     binding.finalImageSize.text = finalImageSize
                     binding.minPollutionAvoided.text = buildString {
@@ -1625,6 +1640,14 @@ class HomeFragment : Fragment() {
                     Toast.makeText(
                         requireActivity(),
                         getString(R.string.h265_3gp),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                if (videoformat == "avi" && videoCodec=="libx265")  {
+                    videoCodec = "libx264"
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.h265_avi),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

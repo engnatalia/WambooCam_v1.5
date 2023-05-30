@@ -97,6 +97,7 @@
     <string name="background2">Background compression already enabled!</string>
     <string name="noreduction">Bigger file because original was already compressed or had poor quality!</string>
     <string name="h265_3gp">Not possible to compress 3gp using H.265, changed to H.264</string>
+    <string name="h265_avi">Not possible to compress avi using H.265, changed to H.264</string>
     <string name="no_bat_set">Battery Setting not found in this device please manually go to setting and enable background task</string>
     <string name="open_wamboo">Oops! Something went wrong. However, your video was recorded and you can compress it using Wamboo.</string>
     <string name="body3">What does this mean? Well, with smaller files, you\'ll be taking a valuable step towards reducing your carbon footprint. And that\'s not all! Wamboo Cam is so efficient that it minimizes your phone\'s battery consumption while compressing your photos and videos. What does that mean? Less pollution associated with battery usage. Isn\'t that marvelous? On the other hand, traditional compression apps tend to be wasteful, draining your battery and generating unnecessary pollution. Imagine having to charge your phone more frequently and spend more electricity! With Wamboo Cam, you won\'t have to worry about that.</string>

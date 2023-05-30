@@ -217,7 +217,7 @@ class VideoCompressionService : Service() {
                 } -movflags +faststart -c:v libx264 -crf 40 $audio -preset ultrafast $outPutSafeUri"
             }
             getString(R.string.good) -> {
-                if (selectedformat=="3gp")
+                if (selectedformat=="3gp" || selectedformat=="avi")
                 { libx="libx264"}
                 else{ libx="libx265"}
                 command = "-y -i ${
@@ -228,7 +228,7 @@ class VideoCompressionService : Service() {
                 } -movflags +faststart -c:v $libx -crf 25 $audio -preset ultrafast $outPutSafeUri"
             }
             getString(R.string.best) -> {
-                if (selectedformat=="3gp")
+                if (selectedformat=="3gp"|| selectedformat=="avi")
                 { libx="libx264"}
                 else{ libx="libx265"}
                 command = "-y -i ${
