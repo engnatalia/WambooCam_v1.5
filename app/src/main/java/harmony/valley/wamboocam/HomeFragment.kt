@@ -1262,7 +1262,6 @@ class HomeFragment : Fragment() {
         with(binding) {
             instructions.isVisible = true
             instructions2.isVisible = true
-
             // Add the clickable link in the TextView
             val linkTextView = binding.root.findViewById<TextView>(R.id.instructions2)
             val text = getString(R.string.instructions2)
@@ -1302,7 +1301,7 @@ class HomeFragment : Fragment() {
             clearPref()
             captureVideo.isVisible = true
             captureImage.isVisible = true
-            initInfo()
+
             spinner.isVisible=false
             spinner6.isVisible=false
             imageView2.isVisible = false

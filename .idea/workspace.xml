@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="improvements">
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected avi issue with H.265 and hidding instructions when stats are shown">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +17,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\matlab\.android\avd\Pixel_6_Pro_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R5CRB314NDL]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -227,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685430778229</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="corrected avi issue with H.265 and hidding instructions when stats are shown">
+      <created>1685452564068</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685452564068</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -257,7 +264,8 @@
     <MESSAGE value="ads added and maximum number of warnings removed" />
     <MESSAGE value="corrected some errors" />
     <MESSAGE value="improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="improvements" />
+    <MESSAGE value="corrected avi issue with H.265 and hidding instructions when stats are shown" />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected avi issue with H.265 and hidding instructions when stats are shown" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -269,12 +277,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1604</line>
+          <line>1619</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1441</line>
+          <line>1456</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
       </breakpoints>
