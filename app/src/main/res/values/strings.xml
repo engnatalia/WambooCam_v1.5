@@ -39,7 +39,7 @@
     <string name="scroll">Check the stats!</string>
     <string name="notification_background_title">Allow Background Compression!</string>
     <string name="notification_background_body">Tap "OK" and the settings will open; go to the "Battery" option and select "Unrestricted" so the compression keeps working even if you close the app (keep Wamboo opened to compress faster!!)</string>
-    <string name="title_home">Eco-compressor</string>
+    <string name="title_home">Eco-cam</string>
     <string name="title_information">Information</string>
     <string name="title_history">History</string>
     <string name="selected_resolution">Selected resolution:</string>

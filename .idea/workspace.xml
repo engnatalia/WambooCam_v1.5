@@ -9,19 +9,31 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected avi issue with H.265 and hidding instructions when stats are shown">
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="put instructions for horizontal camera, only onCreateView">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/obfuscation/mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/obfuscation/mapping.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/app-release.aab" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.aab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/icono.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/icono.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R5CRB314NDL]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\matlab\.android\avd\Pixel_6_Pro_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="EXPORT_PRIVATE_KEY" value="false" />
+    <option name="KEY_STORE_PATH" value="C:\Users\matlab\Documents\HV\Papers\GOAL 1\Paper 4\Wamboo Cam\v1\key022eslaclave.jks" />
+    <option name="KEY_ALIAS" value="key0" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,20 +51,27 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DEBUGGABLE_DEVICE&quot;: &quot;samsung-sm_g998b-R5CRB314NDL&quot;,
-    &quot;DEBUGGABLE_PROCESS&quot;: &quot;harmony.valley.wamboocam&quot;,
-    &quot;DEBUGGER_ID&quot;: &quot;Auto&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHOW_ALL_PROCESSES&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/matlab/Documents/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1/WambooCam_v1.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "BundleExportedModule": "EcoCam.app",
+    "DEBUGGABLE_DEVICE": "samsung-sm_g998b-R5CRB314NDL",
+    "DEBUGGABLE_PROCESS": "harmony.valley.wamboocam",
+    "DEBUGGER_ID": "Auto",
+    "ExportBundle.BundlePathForEcoCam.app": "C:\\Users\\matlab\\Documents\\HV\\Papers\\GOAL 1\\Paper 4\\Wamboo Cam\\v1\\WambooCam_v1.0\\app",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHOW_ALL_PROCESSES": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "C:/Users/matlab/Documents/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1/WambooCam_v1.0/app/src/main/res/drawable"
+  },
+  "keyToStringList": {
+    "ExportApk.BuildVariants": [
+      "release"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="EcoCam.app.main" />
@@ -234,7 +253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685452564068</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="put instructions for horizontal camera, only onCreateView">
+      <created>1685506488764</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1685506488764</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -265,7 +291,8 @@
     <MESSAGE value="corrected some errors" />
     <MESSAGE value="improvements" />
     <MESSAGE value="corrected avi issue with H.265 and hidding instructions when stats are shown" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected avi issue with H.265 and hidding instructions when stats are shown" />
+    <MESSAGE value="put instructions for horizontal camera, only onCreateView" />
+    <option name="LAST_COMMIT_MESSAGE" value="put instructions for horizontal camera, only onCreateView" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -277,13 +304,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1619</line>
-          <option name="timeStamp" value="49" />
+          <line>1121</line>
+          <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt</url>
-          <line>1456</line>
-          <option name="timeStamp" value="52" />
+          <line>1132</line>
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

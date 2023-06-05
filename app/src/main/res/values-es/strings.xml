@@ -34,7 +34,7 @@
     <string name="scroll">Mira los resultados!</string>
     <string name="notification_background_title">Wamboo funciona en segundo plano!</string>
     <string name="notification_background_body">Presiona "OK", ve a la opción de "Batería" y selecciona la opción "No restringido" o similar y empieza a comprimir incluso con la app cerrada. Wamboo trabaja más rápido si la mantienes abierta!</string>
-    <string name="title_home">Eco-compresor</string>
+    <string name="title_home">Eco-cam</string>
     <string name="title_information">Información</string>
     <string name="selected_resolution">Resolución seleccionada:</string>
     <string name="select_resolution">Selecciona resolución</string>

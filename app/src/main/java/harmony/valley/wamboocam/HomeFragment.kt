@@ -11,7 +11,6 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
 import android.os.PowerManager
 import android.provider.MediaStore
 import android.provider.OpenableColumns
@@ -22,7 +21,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
