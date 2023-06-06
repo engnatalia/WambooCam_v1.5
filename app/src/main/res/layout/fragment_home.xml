@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context="harmony.valley.wamboocam.HomeFragment">
 
     <ScrollView
@@ -18,37 +19,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/captureVideo"
-                android:layout_width="200dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:background="@drawable/custum_button"
-                android:fontFamily="@font/bauhausregular"
-                android:text="@string/capture_video"
-                android:textColor="@color/white"
-                android:textFontWeight="700" />
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/captureImage"
-                android:layout_width="200dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:background="@drawable/custum_button"
-                android:fontFamily="@font/bauhausregular"
-                android:text="@string/capture_image"
-                android:textColor="@color/white"
-                android:textFontWeight="700" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/captureVideo"
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:background="@drawable/custum_button"
+                    android:fontFamily="@font/bauhausregular"
+                    android:text="@string/capture_video"
+                    android:textColor="@color/white"
+                    android:textFontWeight="700" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/captureImage"
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:background="@drawable/custum_button"
+                    android:fontFamily="@font/bauhausregular"
+                    android:text="@string/capture_image"
+                    android:textColor="@color/white"
+                    android:textFontWeight="700" />
 
-        </LinearLayout>
+            </LinearLayout>
 
             <RadioButton
                 android:id="@+id/rdOne"
@@ -57,7 +58,9 @@
                 android:layout_marginStart="10dp"
                 android:checked="false"
                 android:fontFamily="@font/bauhausitalic"
-                android:text="@string/background" />
+                android:text="@string/background"
+                android:textColor="@android:color/black"
+                tools:ignore="TextSizeCheck" />
             <TextView
                 android:id="@+id/instructions"
                 android:layout_width="wrap_content"
@@ -66,7 +69,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/instructions"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textSize="15sp"
                 android:visibility="gone"/>
             <TextView
@@ -77,7 +80,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:autoLink="web"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textSize="15sp"
                 android:visibility="gone"/>
             <TextView
@@ -90,7 +93,7 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/instructions3"
                 android:autoLink="web|email"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:visibility="gone"/>
             <VideoView
@@ -125,94 +128,98 @@
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
                 android:contentDescription="image preview"/>
-        <LinearLayout
-            android:id="@+id/statsContainer2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
             <LinearLayout
+                android:id="@+id/statsContainer2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/initial_size"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/initImageSize"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textFontWeight="300"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/initial_size"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/compressed_size"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/initImageSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textFontWeight="300"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
-                <TextView
-                    android:id="@+id/finalImageSize"
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textFontWeight="300"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/compressed_size"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/pollution_avoided"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/finalImageSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textFontWeight="300"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
-                <TextView
-                    android:id="@+id/minPollutionAvoided"
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textFontWeight="300"
-                    android:textSize="15sp"/>
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/pollution_avoided"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/minPollutionAvoided"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textFontWeight="300"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
             <CheckBox android:id="@+id/checkbox_audio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/audio"
                 android:contentDescription="@string/audio"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:textColor="@android:color/black"/>
 
 
             <Spinner
@@ -382,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/initial_size"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -392,7 +399,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
 
@@ -407,7 +415,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/compressed_size"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -417,7 +425,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
 
@@ -432,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/conversion_time"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -442,7 +451,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -456,7 +466,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/initial_battery"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -466,7 +476,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -480,7 +491,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/remaining_battery"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -490,7 +501,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -504,7 +516,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/reduction"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -514,13 +526,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
                 <CheckBox android:id="@+id/checkboxQuality"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/get_quality"/>
+                    android:text="@string/get_quality"
+                    android:textColor="@android:color/black"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -533,7 +547,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/quality"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold"/>
 
@@ -543,7 +557,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textFontWeight="300"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -557,7 +572,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/co2"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -567,7 +582,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:textFontWeight="300"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:textColor="@android:color/black"/>
 
                 </LinearLayout>
 

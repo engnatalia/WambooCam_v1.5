@@ -1292,7 +1292,7 @@ class HomeFragment : Fragment() {
             instructions3.isVisible = false
             // Add the clickable link in the TextView
 
-    } }
+        } }
     private fun resetViews() {
         with(binding) {
 
@@ -1811,30 +1811,30 @@ class HomeFragment : Fragment() {
 
 
             // Image captured successfully
-       if (currentPhotoPath.isNotEmpty()){
-            saveImageToGallery(currentPhotoPath)
-           resetViews()
-           binding.shareVideo.visibility = View.GONE
-           binding.deleteVideo.visibility = View.GONE
-           binding.imageView.visibility = View.VISIBLE
-           hideInitInfo()
-           imageView.setImageURI(currentPhotoPath.toUri())
-           imageView.isVisible = true
-           hideInitInfo()
-           spinner6 = addSpinnerImageResolution()
-           spinner6?.isVisible = true
-           binding.compressImage.isVisible = true
-           binding.shareImage.isVisible = false
-       }else
-       {
+            if (currentPhotoPath.isNotEmpty()){
+                saveImageToGallery(currentPhotoPath)
+                resetViews()
+                binding.shareVideo.visibility = View.GONE
+                binding.deleteVideo.visibility = View.GONE
+                binding.imageView.visibility = View.VISIBLE
+                hideInitInfo()
+                imageView.setImageURI(currentPhotoPath.toUri())
+                imageView.isVisible = true
+                hideInitInfo()
+                spinner6 = addSpinnerImageResolution()
+                spinner6?.isVisible = true
+                binding.compressImage.isVisible = true
+                binding.shareImage.isVisible = false
+            }else
+            {
 
-           AlertDialog.Builder(requireActivity()).apply {
-               val msg2 = getString(R.string.rotation_issue)
-               setMessage(msg2).setPositiveButton(
-                   getString(R.string.ok)
-               ) { _, _ ->  }
-           }.create().show()
-       }
+                AlertDialog.Builder(requireActivity()).apply {
+                    val msg2 = getString(R.string.rotation_issue)
+                    setMessage(msg2).setPositiveButton(
+                        getString(R.string.ok)
+                    ) { _, _ ->  }
+                }.create().show()
+            }
 
         }
     }
