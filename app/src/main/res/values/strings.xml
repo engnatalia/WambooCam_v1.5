@@ -13,7 +13,7 @@
     <string name="best">Best but slow</string>
     <string name="custom_h">Custom (high quality: slower+less compression)</string>
     <string name="custom_l">Custom (low quality: faster+smaller)</string>
-    <string name="ultrafast_description">"Fastest and smallest video, loosing some quality"</string>
+    <string name="ultrafast_description">"Fastest and smallest video, losing some quality"</string>
     <string name="good_description">"Best quality vs. compression speed and size reduction"</string>
     <string name="best_description">"Best size reduction and quality but it's the slowest"</string>
     <string name="compress_video">Compress Video</string>
@@ -35,7 +35,7 @@
     <string name="notification_message_success">Compression successfully completed.</string>
     <string name="notification_message_failure">Compression failed.</string>
     <string name="select_compression">Select Compress option</string>
-	<string name="waiting">Please wait...</string>
+	<string name="waiting">Please wait…</string>
     <string name="scroll">Check the stats!</string>
     <string name="notification_background_title">Allow Background Compression!</string>
     <string name="notification_background_body">Tap "OK" and the settings will open; go to the "Battery" option and select "Unrestricted" so the compression keeps working even if you close the app (keep Wamboo opened to compress faster!!)</string>
@@ -92,7 +92,7 @@
     <string name="compressed">compressed</string>
     <string name="delete_video">Delete non-compressed video</string>
     <string name="delete_image">Delete non-compressed image</string>
-    <string name="pollution_avoided">Pollution reduction, at least:</string>
+    <string name="pollution_avoided">Pollution reduction:</string>
     <string name="background">Allow background compression</string>
     <string name="background2">Background compression already enabled!</string>
     <string name="noreduction">Bigger file because original was already compressed or had poor quality!</string>
@@ -107,6 +107,6 @@
     <string name="rotation_issue">Oops! If you took a horizontal photo, try again, and before pressing \"Accept,\" put your phone back in a vertical position.</string>
     <string name="size_issue">Couldn\'t be calculated, but check the pic metadata in your phone\'s gallery! We promise the compressed pic will be very small!</string>
     <string name="instructions">To capture a video or take a picture in horizontal orientation, click one of the top buttons, hold your camera horizontally, and before confirming the capture, rotate it back to the vertical position to avoid layout resetting (although it may not always occur). Enjoy capturing your moments! </string>
-    <string name="instructions2">Anyway, if that happens, your file is probably saved and you can compress your videos using the amazing Wamboo Eco Vompressor! Donwload it completely free here.</string>
+    <string name="instructions2">Anyway, if that happens, your file is probably saved and you can compress your videos using the amazing Wamboo Eco Compressor! Donwload it completely free here.</string>
     <string name="instructions3">Questions? Contact us: contact.harmonyvalley@gmail.com</string>
 </resources>

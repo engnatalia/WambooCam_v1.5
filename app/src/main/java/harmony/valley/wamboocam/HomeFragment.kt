@@ -1111,6 +1111,8 @@ class HomeFragment : Fragment() {
                     initImageSizeNoUnits.toInt(),
                     finalImageSizeNoUnits.toInt()
                 ).toString()
+
+
                 if (!finalImageSize.equals("0.00 KB", ignoreCase = true)) {
                     // Code for non-zero image size
                     binding.statsContainer2.visibility = View.VISIBLE

@@ -26,11 +26,11 @@
     <string name="remaining_battery">Batería final =</string>
     <string name="co2">Contaminación asociada =</string>
     <string name="notification_title">Compresión de vídeo</string>
-    <string name="notification_message">Compresión en progreso...</string>
+    <string name="notification_message">Compresión en progreso…</string>
     <string name="notification_message_success">Compresión completada con éxito!</string>
     <string name="notification_message_failure">La compresión ha fallado.</string>
     <string name="select_compression">Selecciona una opción</string>
-    <string name="waiting">Por favor, espera...</string>
+    <string name="waiting">Por favor, espera…</string>
     <string name="scroll">Mira los resultados!</string>
     <string name="notification_background_title">Wamboo funciona en segundo plano!</string>
     <string name="notification_background_body">Presiona "OK", ve a la opción de "Batería" y selecciona la opción "No restringido" o similar y empieza a comprimir incluso con la app cerrada. Wamboo trabaja más rápido si la mantienes abierta!</string>
@@ -99,7 +99,7 @@
     <string name="share_compressed_image">Comparte la imagen comprimida</string>
     <string name="compress_image">Comprime la imagen</string>
     <string name="delete_image">Borra imagen no comprimida</string>
-    <string name="pollution_avoided">Reducción de la contaminación, al menos:</string>
+    <string name="pollution_avoided">Contaminación evitada:</string>
     <string name="no_bat_set">Configuración de la batería mo encontrada. Por favor, habilita manualmente la función de segundo plano en la configuración de tu teléfono</string>
     <string name="open_wamboo">Ups! Algo fuer mal, pero tu vídeo se grabó! Usa Wamboo para comprimirlo.</string>
     <string name="h265_3gp">No es posible comprimir 3gp con H.265, cambiado a H.264</string>

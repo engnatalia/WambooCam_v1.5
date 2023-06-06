@@ -20,7 +20,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VideoCompressor"
+        android:theme="@style/Theme.WambooCamApplication"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
