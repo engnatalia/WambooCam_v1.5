@@ -1112,7 +1112,7 @@ class HomeFragment : Fragment() {
                     finalImageSizeNoUnits.toInt()
                 ).toString()
 
-
+                binding.minPollutionAvoided.setTextColor(Color.parseColor("#6F9F3A"))
                 if (!finalImageSize.equals("0.00 KB", ignoreCase = true)) {
                     // Code for non-zero image size
                     binding.statsContainer2.visibility = View.VISIBLE
@@ -1423,10 +1423,11 @@ class HomeFragment : Fragment() {
         binding.spinner6.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long
-            ) { imageResolution =resolutionValues[position]
+            ) { if (view!=null){
+                imageResolution =resolutionValues[position]
                 val resolutionParts = imageResolution.split("x")
                 imageWidth = resolutionParts.getOrNull(0) ?: ""
                 imageHeight = resolutionParts.getOrNull(1) ?: ""
@@ -1444,7 +1445,7 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-            }
+            }}
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Code to perform some action when nothing is selected
             }
@@ -1501,10 +1502,11 @@ class HomeFragment : Fragment() {
         binding.spinner3.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long
-            ) { videoResolution =resolutionValues[position]
+            ) { if (view!=null){
+                videoResolution =resolutionValues[position]
 
                 when (position) {
                     0->{Toast.makeText(
@@ -1520,7 +1522,7 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-            }
+            }}
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Code to perform some action when nothing is selected
             }
@@ -1566,25 +1568,29 @@ class HomeFragment : Fragment() {
         binding.spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long
-            ) { compressSpeed =speedValues[position]
+            ) { if (view!=null) {
+                compressSpeed = speedValues[position]
                 showSpeed = speedsSpinner[position]
                 when (position) {
-                    0->{Toast.makeText(
-                        requireActivity(),
-                        getString(R.string.no_selected_speed),
-                        Toast.LENGTH_SHORT
-                    ).show()}
-                    else ->{Toast.makeText(
-                        requireActivity(),
-                        getString(R.string.selected_speed) + " " + showSpeed,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    0 -> {
+                        Toast.makeText(
+                            requireActivity(),
+                            getString(R.string.no_selected_speed),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else -> {
+                        Toast.makeText(
+                            requireActivity(),
+                            getString(R.string.selected_speed) + " " + showSpeed,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-
+            }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Code to perform some action when nothing is selected
@@ -1629,10 +1635,11 @@ class HomeFragment : Fragment() {
         binding.spinner4.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long
-            ) { videoCodec =codecValues[position]
+            ) { if (view!=null){
+                videoCodec =codecValues[position]
                 showCodec = codecSpinner[position]
                 if (videoformat == "3gp" && videoCodec=="libx265")  {
                     videoCodec = "libx264"
@@ -1664,7 +1671,7 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-            }
+            }}
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Code to perform some action when nothing is selected
             }

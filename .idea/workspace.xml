@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected icon, changed background and text so everything is visible in dark mode">
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected text and spinners views when null (when resuming the layout) behavour">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -278,7 +275,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686046281741</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="corrections">
+      <created>1686077765279</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1686077765279</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -312,7 +316,9 @@
     <MESSAGE value="put instructions for horizontal camera, only onCreateView" />
     <MESSAGE value="new version 1.1, new icon, home fragment with Wamboo Cam name" />
     <MESSAGE value="corrected icon, changed background and text so everything is visible in dark mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected icon, changed background and text so everything is visible in dark mode" />
+    <MESSAGE value="corrections" />
+    <MESSAGE value="corrected text and spinners views when null (when resuming the layout) behavour" />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected text and spinners views when null (when resuming the layout) behavour" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
