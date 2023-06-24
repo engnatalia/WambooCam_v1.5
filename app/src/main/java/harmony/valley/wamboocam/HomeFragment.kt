@@ -42,6 +42,7 @@ import com.arthenica.ffmpegkit.MediaInformationSession
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.ump.*
 import harmony.valley.wamboocam.databinding.FragmentHomeBinding
 import harmony.valley.wamboocam.workers.ForegroundWorker
 import harmony.valley.wamboocam.workers.VideoCompressionWorker
@@ -51,7 +52,8 @@ import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
-
+import com.google.android.ump.ConsentInformation.OnConsentInfoUpdateFailureListener
+import com.google.android.ump.ConsentInformation.OnConsentInfoUpdateSuccessListener
 
 private const val REQUEST_PICK_VIDEO = 1
 private const val REQUEST_PICK_IMAGE = 1
@@ -104,7 +106,8 @@ class HomeFragment : Fragment() {
     private var isCameraRotated = false // Initialize the rotation flag
 
     private var selectedVideoUri: Uri? = null
-
+    private lateinit var consentInformation: ConsentInformation
+    private lateinit var consentForm: ConsentForm
 
     //this receiver will trigger when the compression is completed
     private val videoCompressionCompletedReceiver = object : BroadcastReceiver() {
@@ -429,8 +432,55 @@ class HomeFragment : Fragment() {
     private fun clearPref() {
         editor.clear().commit()
     }
+    private fun loadForm() {
+        // Loads a consent form. Must be called on the main thread.
+        UserMessagingPlatform.loadConsentForm(
+            requireActivity(),
+            UserMessagingPlatform.OnConsentFormLoadSuccessListener { form ->
+                consentForm = form
+                if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.REQUIRED) {
+                    consentForm.show(
+                        requireActivity(),
+                        ConsentForm.OnConsentFormDismissedListener { dismissal ->
+                            if (consentInformation.consentStatus == ConsentInformation.ConsentStatus.OBTAINED) {
+                                // App can start requesting ads.
+                            }
 
+                            // Handle dismissal by reloading form.
+                            loadForm()
+                        }
+                    )
+                }
+            },
+            UserMessagingPlatform.OnConsentFormLoadFailureListener {
+                // Handle the error.
+            }
+        )
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (view != null) {
+            super.onViewCreated(view, savedInstanceState)
+            super.onViewCreated(view, savedInstanceState)
+            // Set tag for under age of consent. false means users are not under age.
+            val params = ConsentRequestParameters.Builder()
+                .setTagForUnderAgeOfConsent(false)
+                .build()
+
+            consentInformation = UserMessagingPlatform.getConsentInformation(requireContext())
+            consentInformation.requestConsentInfoUpdate(
+                requireActivity(),
+                params,
+                OnConsentInfoUpdateSuccessListener {
+                    // The consent information state was updated.
+                    // You are now ready to check if a form is available.
+                    if (consentInformation.isConsentFormAvailable) {
+                        loadForm()
+                    }
+                },
+                OnConsentInfoUpdateFailureListener {
+                    // Handle the error.
+                })
+        }
         loadAd()
         //checkNotificationPermission()
         checkCameraPermission()
