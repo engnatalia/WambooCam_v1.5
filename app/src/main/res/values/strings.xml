@@ -109,4 +109,5 @@
     <string name="instructions">To capture a video or take a picture in horizontal orientation, click one of the top buttons, hold your camera horizontally, and before confirming the capture, rotate it back to the vertical position to avoid layout resetting (although it may not always occur). Enjoy capturing your moments! </string>
     <string name="instructions2">Anyway, if that happens, your file is probably saved and you can compress your videos using the amazing Wamboo Eco Compressor! Donwload it completely free here.</string>
     <string name="instructions3">Questions? Contact us: contact.harmonyvalley@gmail.com</string>
+    <string name="google_play">No application found to open the link.</string>
 </resources>

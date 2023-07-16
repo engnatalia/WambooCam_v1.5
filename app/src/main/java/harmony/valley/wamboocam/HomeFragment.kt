@@ -1318,10 +1318,19 @@ class HomeFragment : Fragment() {
             val spannableString = SpannableString(text)
             val clickableSpan = object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    val url =
-                        "https://play.google.com/store/apps/details?id=wamboo.example.videocompressor"
+                    val url = "https://play.google.com/store/apps/details?id=wamboo.example.videocompressor"
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
+
+                    try {
+                        startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        // Maneja la excepción aquí, por ejemplo, muestra un mensaje de error
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.google_play),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
             spannableString.setSpan(
