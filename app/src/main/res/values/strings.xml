@@ -29,6 +29,7 @@
     <string name="co2">Associated pollution = </string>
     <string name="quality">Quality loss = </string>
     <string name="poor_quality">Bad quality or not possible to obtain; change compression parameters</string>
+    <string name="quality_error">Not possible to obtain the quality this time. Send an email to contact.harmonyvalley@gmail.com describing the issue, please!</string>
     <string name="reduction">Size reduction = </string>
     <string name="notification_title">Video Compression</string>
     <string name="notification_message">Compression in progress…</string>

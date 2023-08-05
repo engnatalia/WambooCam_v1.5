@@ -9,13 +9,18 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="added RGPD message for customized ads and changed app version" />
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected url issue (as in previous version) and updated version to be 1.3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\matlab\.android\avd\Pixel_6_Pro_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[adb-R5CRB314NDL-O4ozH0._adb-tls-connect._tcp]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -23,7 +28,7 @@
   </component>
   <component name="GenerateSignedApkSettings">
     <option name="EXPORT_PRIVATE_KEY" value="false" />
-    <option name="KEY_STORE_PATH" value="C:\Users\matlab\Documents\HV\Papers\GOAL 1\Paper 4\Wamboo Cam\v1\key022eslaclave.jks" />
+    <option name="KEY_STORE_PATH" value="D:\HV\Papers\GOAL 1\Paper 4\Wamboo Cam\v1\key022eslaclave.jks" />
     <option name="KEY_ALIAS" value="key0" />
     <option name="REMEMBER_PASSWORDS" value="true" />
   </component>
@@ -49,14 +54,14 @@
     "DEBUGGABLE_DEVICE": "samsung-sm_g998b-R5CRB314NDL",
     "DEBUGGABLE_PROCESS": "harmony.valley.wamboocam",
     "DEBUGGER_ID": "Auto",
-    "ExportBundle.BundlePathForEcoCam.app": "C:\\Users\\matlab\\Documents\\HV\\Papers\\GOAL 1\\Paper 4\\Wamboo Cam\\v1\\WambooCam_v1.1\\app",
+    "ExportBundle.BundlePathForEcoCam.app": "D:\\HV\\Papers\\GOAL 1\\Paper 4\\Wamboo Cam\\v1\\WambooCam_v1.1\\app",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "SHOW_ALL_PROCESSES": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "D:/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1.3/WambooCam_v1.3"
+    "last_opened_file_path": "D:/HV/Papers/GOAL 1/Paper 4/Wamboo Cam/v1.4/WambooCam_v1.4"
   },
   "keyToStringList": {
     "ExportApk.BuildVariants": [
@@ -300,7 +305,14 @@
       <option name="project" value="LOCAL" />
       <updated>1689480576204</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="corrected url issue (as in previous version) and updated version to be 1.3">
+      <created>1689481112852</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1689481112852</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -337,7 +349,8 @@
     <MESSAGE value="corrections" />
     <MESSAGE value="corrected text and spinners views when null (when resuming the layout) behavour" />
     <MESSAGE value="added RGPD message for customized ads and changed app version" />
-    <option name="LAST_COMMIT_MESSAGE" value="added RGPD message for customized ads and changed app version" />
+    <MESSAGE value="corrected url issue (as in previous version) and updated version to be 1.3" />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected url issue (as in previous version) and updated version to be 1.3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

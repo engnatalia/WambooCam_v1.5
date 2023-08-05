@@ -111,4 +111,5 @@
     <string name="instructions3">Preguntas? Contáctanos: contact.harmonyvalley@gmail.com</string>
     <string name="h265_avi">No es posible comprimir avi con H.265, cambiado a H.264</string>
     <string name="google_play">No se encontró ninguna aplicación para abrir el enlace</string>
+    <string name="quality_error">Esta vez no fue posible calcular la calidad. Envía un email a contact.harmonyvalley@gmail.com describiendo el problema, por favor!</string>
 </resources>

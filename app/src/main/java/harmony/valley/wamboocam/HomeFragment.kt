@@ -207,37 +207,48 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun calculateQuality(){
-        binding.quality.visibility= View.GONE
-        binding.qualityDescription.visibility= View.GONE
-        binding.checkboxQuality.visibility= View.GONE
-        binding.quality.text =""
-        val command2 = "-i ${FFmpegKitConfig.getSafParameterForRead(
-            activity,
-            videoUrl
-        )} -i ${FFmpegKitConfig.getSafParameterForRead(
-            activity,
-            Uri.parse(compressedFilePath)
-        )} -lavfi \"ssim;[0:v][1:v]psnr\" -f null -"
-        Toast.makeText(context,  Html.fromHtml("<font color='red' ><b>" +getString(R.string.quality_progress)+ "</b></font>"), Toast.LENGTH_SHORT).show()
-        val hola=FFmpegKit.execute(command2)
+    private fun calculateQuality() {
+        if (activity != null && videoUrl != null && compressedFilePath != "")  {
+        binding.quality.visibility = View.GONE
+        binding.qualityDescription.visibility = View.GONE
+        binding.checkboxQuality.visibility = View.GONE
+        binding.quality.text = ""
+        val command2 = "-i ${
+            FFmpegKitConfig.getSafParameterForRead(
+                activity,
+                videoUrl
+            )
+        } -i ${
+            FFmpegKitConfig.getSafParameterForRead(
+                activity,
+                Uri.parse(compressedFilePath)
+            )
+        } -lavfi \"ssim;[0:v][1:v]psnr\" -f null -"
+        Toast.makeText(
+            context,
+            Html.fromHtml("<font color='red' ><b>" + getString(R.string.quality_progress) + "</b></font>"),
+            Toast.LENGTH_SHORT
+        ).show()
+        val hola = FFmpegKit.execute(command2)
         binding.quality.visibility = View.VISIBLE
         val indexSsim = hola.logs.size
-        val ssimLine = hola.logs[indexSsim-2]
-        val ssim=ssimLine.message.substringAfter("All:").substringBefore("(")
+        val ssimLine = hola.logs[indexSsim - 2]
+        val ssim = ssimLine.message.substringAfter("All:").substringBefore("(")
         val quality: Double
         val msg1: String
-        if (ssim.contains("0.")){
-            quality = ((1-ssim.toDouble())*100).toBigDecimal().setScale(2,
-                RoundingMode.UP).toDouble()
+        if (ssim.contains("0.")) {
+            quality = ((1 - ssim.toDouble()) * 100).toBigDecimal().setScale(
+                2,
+                RoundingMode.UP
+            ).toDouble()
             binding.quality.text = buildString {
                 append(quality.toString())
                 append("%")
             }
-            msg1 = getString(R.string.quality_completed)+" "+quality.toString()+"%"}
-        else{
-            binding.quality.text =getString(R.string.poor_quality)
-            msg1=getString(R.string.poor_quality)
+            msg1 = getString(R.string.quality_completed) + " " + quality.toString() + "%"
+        } else {
+            binding.quality.text = getString(R.string.poor_quality)
+            msg1 = getString(R.string.poor_quality)
         }
         AlertDialog.Builder(requireActivity()).apply {
 
@@ -246,10 +257,31 @@ class HomeFragment : Fragment() {
                 "OK"
             ) { _, _ -> (requireActivity()) }
         }.create().show()
-        binding.quality.visibility= View.VISIBLE
-        binding.qualityDescription.visibility= View.VISIBLE
-        binding.checkboxQuality.visibility= View.VISIBLE
+        binding.quality.visibility = View.VISIBLE
+        binding.qualityDescription.visibility = View.VISIBLE
+        binding.checkboxQuality.visibility = View.VISIBLE
+    } else
+        {
+            val msg1 = getString(R.string.quality_error)
+            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:contact.harmonyvalley@gmail.com")
+                putExtra(Intent.EXTRA_SUBJECT, "Quality Error")
+                putExtra(Intent.EXTRA_TEXT, msg1)
+            }
 
+            AlertDialog.Builder(requireActivity()).apply {
+                setMessage(msg1)
+                setPositiveButton("OK") { _, _ ->
+                    // Open email application with "contact.harmonyvalley@gmail.com" in the "To" field
+                    try {
+                        startActivity(emailIntent)
+                    } catch (e: Exception) {
+                        // Handle the case when no email application is available or other issues occur
+                        // For example, show a toast or a dialog saying that no email app is available
+                    }
+                }
+            }.create().show()
+        }
     }
     private fun showStats(
         initialSize2: String?,
