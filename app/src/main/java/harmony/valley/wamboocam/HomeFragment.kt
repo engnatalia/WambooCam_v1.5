@@ -187,7 +187,7 @@ class HomeFragment : Fragment() {
             if (intent?.action == Constants.WORK_PROGRESS_ACTION) {
 
                 // Do something when the WorkManager completes its work
-                // For valley, update UI, show a notification, etc.
+                // For example, update UI, show a notification, etc.
                 if (intent.getStringExtra(RETURN_CODE).equals("0")) { //0 means success
                     val percentage = intent.getStringExtra("percentage")
                     val msg = getString(R.string.waiting)
@@ -1991,7 +1991,7 @@ If there is an error in the process, an error message is displayed to the user v
                             //check if video is rotated and swap resolution
                             if (side != null) {
                                 val rotation = side.substringAfter("rotation\":").substringBefore('}')
-                                if (rotation == "-90" || rotation == "270"){
+                                if (rotation == "-90" || rotation == "-90" || rotation == "-270"){
                                     videoHeight = mediaInformation.mediaInformation.streams[0].width.toString()
                                     videoWidth = mediaInformation.mediaInformation.streams[0].height.toString()
                                     when (videoHeight){

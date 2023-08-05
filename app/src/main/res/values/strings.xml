@@ -37,7 +37,7 @@
     <string name="notification_message_failure">Compression failed.</string>
     <string name="select_compression">Select Compress option</string>
 	<string name="waiting">Please wait…</string>
-    <string name="scroll">Check the stats!</string>
+    <string name="scroll">Scroll down and check the stats!</string>
     <string name="notification_background_title">Allow Background Compression!</string>
     <string name="notification_background_body">Tap "OK" and the settings will open; go to the "Battery" option and select "Unrestricted" so the compression keeps working even if you close the app (keep Wamboo opened to compress faster!!)</string>
     <string name="title_home">Eco-cam</string>

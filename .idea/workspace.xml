@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="corrected url issue (as in previous version) and updated version to be 1.3">
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="updated version in gradle">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
@@ -312,7 +312,21 @@
       <option name="project" value="LOCAL" />
       <updated>1689481112852</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="added message for quality button when there is an error">
+      <created>1691232262401</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1691232262401</updated>
+    </task>
+    <task id="LOCAL-00026" summary="updated version in gradle">
+      <created>1691232355136</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1691232355136</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -350,15 +364,22 @@
     <MESSAGE value="corrected text and spinners views when null (when resuming the layout) behavour" />
     <MESSAGE value="added RGPD message for customized ads and changed app version" />
     <MESSAGE value="corrected url issue (as in previous version) and updated version to be 1.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected url issue (as in previous version) and updated version to be 1.3" />
+    <MESSAGE value="added message for quality button when there is an error" />
+    <MESSAGE value="updated version in gradle" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated version in gradle" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/services/VideoCompressionService.kt</url>
-          <line>261</line>
-          <option name="timeStamp" value="26" />
+          <line>254</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/services/VideoCompressionService.kt</url>
+          <line>58</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
