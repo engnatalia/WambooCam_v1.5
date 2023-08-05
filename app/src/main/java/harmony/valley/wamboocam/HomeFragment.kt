@@ -1991,7 +1991,7 @@ If there is an error in the process, an error message is displayed to the user v
                             //check if video is rotated and swap resolution
                             if (side != null) {
                                 val rotation = side.substringAfter("rotation\":").substringBefore('}')
-                                if (rotation == "-90" || rotation == "-90" || rotation == "-270"){
+                                if (rotation == "-90" || rotation == "90" || rotation == "-270"){
                                     videoHeight = mediaInformation.mediaInformation.streams[0].width.toString()
                                     videoWidth = mediaInformation.mediaInformation.streams[0].height.toString()
                                     when (videoHeight){
