@@ -506,7 +506,10 @@ class HomeFragment : Fragment() {
                     // The consent information state was updated.
                     // You are now ready to check if a form is available.
                     if (consentInformation.isConsentFormAvailable) {
-                        loadForm()
+                        // Make sure loadForm() is called in the main thread
+                        requireActivity().runOnUiThread {
+                            loadForm()
+                        }
                     }
                 },
                 OnConsentInfoUpdateFailureListener {
