@@ -1,4 +1,3 @@
-
 # Wamboo Cam
 
 Welcome to the Wamboo Cam project! We appreciate your interest in contributing to our open-source project. Before you get started, please take a moment to review the following guidelines.
@@ -12,7 +11,7 @@ To contribute to this project, follow these steps:
 2. **Clone the Repository**: In your terminal, run the following command to clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/WambooCam_v1.4.git
+   git clone https://github.com/engnatalia/WambooCam_v1.4.git
    ```
 
 3. **Create a New Branch**: Create a new branch for your contribution using the following command:
