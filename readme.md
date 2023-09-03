@@ -40,6 +40,8 @@ To contribute to this project, follow these steps:
 
 By following these guidelines, you can contribute to our project and help make Harmony Valley even better. We appreciate your contributions!
 
+Additionally, we have two Matlab developments for VP9 and HEVC motion estimation available at [WambooVP9ME_v1.0](https://github.com/engnatalia/WambooVP9ME_v1.0/blob/main/README.md) and [WambooHEVCME_v1.0](https://github.com/engnatalia/WambooHEVCME_v1.0/tree/main), where your contributions are welcome!
+
 ## License
 
 This project is licensed under the Apache License 2.0. By contributing to this project, you agree to abide by the terms and conditions of this license. You can find more details in the [LICENSE](LICENSE.md) file.
