@@ -208,60 +208,90 @@ class HomeFragment : Fragment() {
     }
 
     private fun calculateQuality() {
-        if (activity != null && videoUrl != null && compressedFilePath != "")  {
-        binding.quality.visibility = View.GONE
-        binding.qualityDescription.visibility = View.GONE
-        binding.checkboxQuality.visibility = View.GONE
-        binding.quality.text = ""
-        val command2 = "-i ${
-            FFmpegKitConfig.getSafParameterForRead(
-                activity,
-                videoUrl
-            )
-        } -i ${
-            FFmpegKitConfig.getSafParameterForRead(
-                activity,
-                Uri.parse(compressedFilePath)
-            )
-        } -lavfi \"ssim;[0:v][1:v]psnr\" -f null -"
-        Toast.makeText(
-            context,
-            Html.fromHtml("<font color='red' ><b>" + getString(R.string.quality_progress) + "</b></font>"),
-            Toast.LENGTH_SHORT
-        ).show()
-        val hola = FFmpegKit.execute(command2)
-        binding.quality.visibility = View.VISIBLE
-        val indexSsim = hola.logs.size
-        val ssimLine = hola.logs[indexSsim - 2]
-        val ssim = ssimLine.message.substringAfter("All:").substringBefore("(")
-        val quality: Double
-        val msg1: String
-        if (ssim.contains("0.")) {
-            quality = ((1 - ssim.toDouble()) * 100).toBigDecimal().setScale(
-                2,
-                RoundingMode.UP
-            ).toDouble()
-            binding.quality.text = buildString {
-                append(quality.toString())
-                append("%")
+        if (activity != null && videoUrl != null && compressedFilePath.isNotEmpty()) {
+            binding.quality.visibility = View.GONE
+            binding.qualityDescription.visibility = View.GONE
+            binding.checkboxQuality.visibility = View.GONE
+            binding.quality.text = ""
+
+            // Check the FFmpeg command
+            val command2 = "-i ${
+                FFmpegKitConfig.getSafParameterForRead(
+                    activity,
+                    videoUrl
+                )
+            } -i ${
+                FFmpegKitConfig.getSafParameterForRead(
+                    activity,
+                    Uri.parse(compressedFilePath)
+                )
+            } -lavfi \"ssim;[0:v][1:v]psnr\" -f null -"
+            Log.d(ContentValues.TAG, "Comando FFmpeg: $command2")
+
+            // Show a proggress message
+            Toast.makeText(
+                context,
+                Html.fromHtml("<font color='red' ><b>" + getString(R.string.quality_progress) + "</b></font>"),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            try {
+                // Run the FFmpeg command
+                val hola = FFmpegKit.execute(command2)
+
+                // Verificar los logs de FFmpeg
+                val indexSsim = hola.logs.size
+                val ssimLine = hola.logs.get(indexSsim - 2)
+                val ssim = ssimLine.message.substringAfter("All:").substringBefore("(")
+                val quality: Double
+                val msg1: String
+                if (ssim.contains("0.")) {
+                    quality = ((1 - ssim.toDouble()) * 100).toBigDecimal().setScale(
+                        2,
+                        RoundingMode.UP
+                    ).toDouble()
+                    binding.quality.text = buildString {
+                        append(quality.toString())
+                        append("%")
+                    }
+                    msg1 = getString(R.string.quality_completed) + " " + quality.toString() + "%"
+                } else {
+                    binding.quality.text = getString(R.string.poor_quality)
+                    msg1 = getString(R.string.poor_quality)
+                }
+                AlertDialog.Builder(requireActivity()).apply {
+                    setMessage(msg1).setPositiveButton("OK") { _, _ -> (requireActivity()) }
+                }.create().show()
+                binding.quality.visibility = View.VISIBLE
+                binding.qualityDescription.visibility = View.VISIBLE
+                binding.checkboxQuality.visibility = View.VISIBLE
+            } catch (e: Exception) {
+                // Handle the FFmpeg running errors
+                Log.e(ContentValues.TAG, "Error al ejecutar FFmpeg: ${e.message}", e)
+
+                // Mostrar un mensaje de error
+                val msg1 = getString(R.string.quality_error)
+                val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:contact.harmonyvalley@gmail.com")
+                    putExtra(Intent.EXTRA_SUBJECT, "Quality Error")
+                    putExtra(Intent.EXTRA_TEXT, msg1)
+                }
+
+                AlertDialog.Builder(requireActivity()).apply {
+                    setMessage(msg1)
+                    setPositiveButton("OK") { _, _ ->
+                        // Try to open the mail app
+                        try {
+                            startActivity(emailIntent)
+                        } catch (e: Exception) {
+                            // If mail app can't open, show a message
+                            Toast.makeText(context, R.string.quality_error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }.create().show()
             }
-            msg1 = getString(R.string.quality_completed) + " " + quality.toString() + "%"
         } else {
-            binding.quality.text = getString(R.string.poor_quality)
-            msg1 = getString(R.string.poor_quality)
-        }
-        AlertDialog.Builder(requireActivity()).apply {
-
-
-            setMessage(msg1).setPositiveButton(
-                "OK"
-            ) { _, _ -> (requireActivity()) }
-        }.create().show()
-        binding.quality.visibility = View.VISIBLE
-        binding.qualityDescription.visibility = View.VISIBLE
-        binding.checkboxQuality.visibility = View.VISIBLE
-    } else
-        {
+            // Handle if activity, videoUrl o compressedFilePath rare null of empty
             val msg1 = getString(R.string.quality_error)
             val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:contact.harmonyvalley@gmail.com")
@@ -272,12 +302,12 @@ class HomeFragment : Fragment() {
             AlertDialog.Builder(requireActivity()).apply {
                 setMessage(msg1)
                 setPositiveButton("OK") { _, _ ->
-                    // Open email application with "contact.harmonyvalley@gmail.com" in the "To" field
+                    // Try to open the mail app
                     try {
                         startActivity(emailIntent)
                     } catch (e: Exception) {
-                        // Handle the case when no email application is available or other issues occur
-                        // For example, show a toast or a dialog saying that no email app is available
+                        // If mail app can't open, show a message
+                        Toast.makeText(context, R.string.quality_error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }.create().show()
@@ -363,7 +393,13 @@ class HomeFragment : Fragment() {
         if (compressedSize != null && initialSize != "") {
 
             val finalSize = compressedSize.substringBefore(" ")
-            val finalS = finalSize.replace(",",".").toDouble()
+            val finalSizeCheck = finalSize.replace(",", "").toDoubleOrNull()
+            var finalS= 100.0
+            if (finalSizeCheck != null) {
+                if (finalSizeCheck >1000 ) {
+                    finalS = finalSize.replace(".", "").replace(",", ".").toDouble()
+                }else {finalS = finalSize.replace(",", ".").toDouble()}
+            }
             var final = finalS
             if ((compressedSize.contains("k") && initialSize.contains("M") )||(compressedSize.contains("M") && initialSize.contains("G") ) ||(compressedSize.contains("B") && initialSize.contains("k") )){
                 final=finalS/1000

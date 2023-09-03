@@ -269,10 +269,20 @@ class VideoCompressionService : Service() {
                     ?.let { fileSize(it) }
                 var sizeReduction = 0.toBigDecimal()
                 if (compressedSize != null) {
-
                     val finalSize = compressedSize.substringBefore(" ")
-                    val finalS = finalSize.replace(",",".").toDouble()
+                    Log.d("finalSize", finalSize.toString())
+                    val finalSizeCheck = finalSize.replace(",", "").toDoubleOrNull()
+                    var finalS= 100.0
+                    if (finalSizeCheck != null) {
+                        if (finalSizeCheck >1000 ) {
+                            finalS = finalSize.replace(".", "").replace(",", ".").toDouble()
+                        }else {finalS = finalSize.replace(",", ".").toDouble()}
+                    }
                     var final = finalS
+                    if ((compressedSize.contains("k") && initialSize.contains("M") )||(compressedSize.contains("M") && initialSize.contains("G") ) ||(compressedSize.contains("B") && initialSize.contains("k") )){
+                        final=finalS/1000
+                    }
+                    Log.d("finalS", finalS.toString())
                     if ((compressedSize.contains("k") && initialSize.contains("M") )||(compressedSize.contains("M") && initialSize.contains("G") ) ||(compressedSize.contains("B") && initialSize.contains("k") )){
                         final=finalS/1000
                     }
@@ -282,6 +292,8 @@ class VideoCompressionService : Service() {
                         .setScale(2,
                             RoundingMode.UP))?.toDouble()!!).toBigDecimal().setScale(2,
                         RoundingMode.UP)
+
+
 
 
                 }

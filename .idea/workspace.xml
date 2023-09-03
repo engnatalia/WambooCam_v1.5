@@ -9,10 +9,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="video rotation solved again">
+    <list default="true" id="1113e1c0-f91c-400d-b4e1-439eff784561" name="Changes" comment="loadForm corrected onViewCreated, typo in Info tab">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/obfuscation/mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/obfuscation/mapping.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/harmony/valley/wamboocam/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-es/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,7 +339,14 @@
       <option name="project" value="LOCAL" />
       <updated>1691257432207</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="loadForm corrected onViewCreated, typo in Info tab">
+      <created>1693493760341</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1693493760341</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -354,7 +361,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="corrected delete button and added permission READ_IMAGES and videos that don't work" />
     <MESSAGE value="corrected added permission READ_IMAGES and videos" />
     <MESSAGE value="started video formats spinner" />
     <MESSAGE value="finished video formats spinner" />
@@ -379,7 +385,8 @@
     <MESSAGE value="updated version in gradle" />
     <MESSAGE value="video rotation solved" />
     <MESSAGE value="video rotation solved again" />
-    <option name="LAST_COMMIT_MESSAGE" value="video rotation solved again" />
+    <MESSAGE value="loadForm corrected onViewCreated, typo in Info tab" />
+    <option name="LAST_COMMIT_MESSAGE" value="loadForm corrected onViewCreated, typo in Info tab" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
