@@ -1,4 +1,4 @@
-```markdown
+
 # Wamboo Cam
 
 Welcome to the Wamboo Cam project! We appreciate your interest in contributing to our open-source project. Before you get started, please take a moment to review the following guidelines.
