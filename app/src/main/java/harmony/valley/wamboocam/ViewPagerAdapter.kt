@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2023 Natalia Molinero Mingorance
+ * All rights reserved.
+ */
+
 package harmony.valley.wamboocam
 
 import androidx.fragment.app.Fragment

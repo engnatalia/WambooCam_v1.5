@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2023 Natalia Molinero Mingorance
+ * All rights reserved.
+ */
+
+
 package harmony.valley.wamboocam.db
 
 
