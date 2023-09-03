@@ -43,7 +43,7 @@ By following these guidelines, you can contribute to our project and help make H
 
 ## License
 
-This project is licensed under the Apache License 2.0. By contributing to this project, you agree to abide by the terms and conditions of this license. You can find more details in the [LICENSE](LICENSE) file.
+This project is licensed under the Apache License 2.0. By contributing to this project, you agree to abide by the terms and conditions of this license. You can find more details in the [LICENSE](LICENSE.md) file.
 
 ## Copyright and Intellectual Property
 
