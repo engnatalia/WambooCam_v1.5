@@ -11,7 +11,7 @@ To contribute to this project, follow these steps:
 2. **Clone the Repository**: In your terminal, run the following command to clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/engnatalia/WambooCam_v1.4.git
+   git clone https://github.com/engnatalia/WambooCam_v1.5.git
    ```
 
 3. **Create a New Branch**: Create a new branch for your contribution using the following command:
